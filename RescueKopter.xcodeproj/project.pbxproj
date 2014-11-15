@@ -1,0 +1,556 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		042F17EA1A1792EA00614DB3 /* KPTMapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042F17E91A1792EA00614DB3 /* KPTMapModel.swift */; };
+		04F8D97D1A175E630042A158 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D97C1A175E630042A158 /* AppDelegate.swift */; };
+		04F8D97F1A175E630042A158 /* KPTGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D97E1A175E630042A158 /* KPTGameViewController.swift */; };
+		04F8D9811A175E630042A158 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9801A175E630042A158 /* Shaders.metal */; };
+		04F8D9841A175E630042A158 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04F8D9821A175E630042A158 /* Main.storyboard */; };
+		04F8D9861A175E630042A158 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04F8D9851A175E630042A158 /* Images.xcassets */; };
+		04F8D9891A175E630042A158 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 04F8D9871A175E630042A158 /* LaunchScreen.xib */; };
+		04F8D9951A175E630042A158 /* RescueKopterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9941A175E630042A158 /* RescueKopterTests.swift */; };
+		04F8D9A51A1761710042A158 /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D99F1A1761710042A158 /* Math.swift */; };
+		04F8D9A61A1761710042A158 /* Matrix33.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9A01A1761710042A158 /* Matrix33.swift */; };
+		04F8D9A71A1761710042A158 /* Matrix34.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9A11A1761710042A158 /* Matrix34.swift */; };
+		04F8D9A81A1761710042A158 /* Quaternion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9A21A1761710042A158 /* Quaternion.swift */; };
+		04F8D9A91A1761710042A158 /* Vector2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9A31A1761710042A158 /* Vector2.swift */; };
+		04F8D9AA1A1761710042A158 /* Vector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9A41A1761710042A158 /* Vector3.swift */; };
+		04F8D9AD1A1762360042A158 /* Generic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9AC1A1762360042A158 /* Generic.swift */; };
+		04F8D9AF1A1762960042A158 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9AE1A1762960042A158 /* Utilities.swift */; };
+		04F8D9B41A1765060042A158 /* KPTTextureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9B31A1765060042A158 /* KPTTextureManager.swift */; };
+		04F8D9B61A1765830042A158 /* KPTModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9B51A1765830042A158 /* KPTModelManager.swift */; };
+		04F8D9B81A17662E0042A158 /* KPTModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9B71A17662E0042A158 /* KPTModel.swift */; };
+		04F8D9C61A1769B10042A158 /* checker.png in Resources */ = {isa = PBXBuildFile; fileRef = 04F8D9BA1A1769B10042A158 /* checker.png */; };
+		04F8D9C71A1769B10042A158 /* Mesh1_surf.png in Resources */ = {isa = PBXBuildFile; fileRef = 04F8D9BB1A1769B10042A158 /* Mesh1_surf.png */; };
+		04F8D9C81A1769B10042A158 /* Object01.png in Resources */ = {isa = PBXBuildFile; fileRef = 04F8D9BC1A1769B10042A158 /* Object01.png */; };
+		04F8D9C91A1769B10042A158 /* palmnew.gmf in Resources */ = {isa = PBXBuildFile; fileRef = 04F8D9BD1A1769B10042A158 /* palmnew.gmf */; };
+		04F8D9D01A1769B10042A158 /* sphere.gmf in Resources */ = {isa = PBXBuildFile; fileRef = 04F8D9C51A1769B10042A158 /* sphere.gmf */; };
+		04F8D9D21A1771460042A158 /* Skybox.metal in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9D11A1771460042A158 /* Skybox.metal */; };
+		04F8D9D41A1776590042A158 /* skybox.png in Resources */ = {isa = PBXBuildFile; fileRef = 04F8D9D31A1776590042A158 /* skybox.png */; };
+		04F8D9D71A177AB00042A158 /* grass.png in Resources */ = {isa = PBXBuildFile; fileRef = 04F8D9D51A177AB00042A158 /* grass.png */; };
+		04F8D9D81A177AB00042A158 /* heightmap.png in Resources */ = {isa = PBXBuildFile; fileRef = 04F8D9D61A177AB00042A158 /* heightmap.png */; };
+		04F8D9DA1A177C680042A158 /* KPTHeightMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9D91A177C680042A158 /* KPTHeightMap.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		04F8D98F1A175E630042A158 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 04F8D96F1A175E630042A158 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 04F8D9761A175E630042A158;
+			remoteInfo = RescueKopter;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		042F17E91A1792EA00614DB3 /* KPTMapModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KPTMapModel.swift; sourceTree = "<group>"; };
+		04F8D9771A175E630042A158 /* RescueKopter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RescueKopter.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		04F8D97B1A175E630042A158 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		04F8D97C1A175E630042A158 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		04F8D97E1A175E630042A158 /* KPTGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KPTGameViewController.swift; sourceTree = "<group>"; };
+		04F8D9801A175E630042A158 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		04F8D9831A175E630042A158 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		04F8D9851A175E630042A158 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		04F8D9881A175E630042A158 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		04F8D98E1A175E630042A158 /* RescueKopterTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RescueKopterTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		04F8D9931A175E630042A158 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		04F8D9941A175E630042A158 /* RescueKopterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RescueKopterTests.swift; sourceTree = "<group>"; };
+		04F8D99F1A1761710042A158 /* Math.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
+		04F8D9A01A1761710042A158 /* Matrix33.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix33.swift; sourceTree = "<group>"; };
+		04F8D9A11A1761710042A158 /* Matrix34.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Matrix34.swift; sourceTree = "<group>"; };
+		04F8D9A21A1761710042A158 /* Quaternion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Quaternion.swift; sourceTree = "<group>"; };
+		04F8D9A31A1761710042A158 /* Vector2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector2.swift; sourceTree = "<group>"; };
+		04F8D9A41A1761710042A158 /* Vector3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector3.swift; sourceTree = "<group>"; };
+		04F8D9AC1A1762360042A158 /* Generic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Generic.swift; sourceTree = "<group>"; };
+		04F8D9AE1A1762960042A158 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		04F8D9B21A17643B0042A158 /* ShaderCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderCommon.h; sourceTree = "<group>"; };
+		04F8D9B31A1765060042A158 /* KPTTextureManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KPTTextureManager.swift; sourceTree = "<group>"; };
+		04F8D9B51A1765830042A158 /* KPTModelManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KPTModelManager.swift; sourceTree = "<group>"; };
+		04F8D9B71A17662E0042A158 /* KPTModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KPTModel.swift; sourceTree = "<group>"; };
+		04F8D9BA1A1769B10042A158 /* checker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = checker.png; sourceTree = "<group>"; };
+		04F8D9BB1A1769B10042A158 /* Mesh1_surf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Mesh1_surf.png; sourceTree = "<group>"; };
+		04F8D9BC1A1769B10042A158 /* Object01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Object01.png; sourceTree = "<group>"; };
+		04F8D9BD1A1769B10042A158 /* palmnew.gmf */ = {isa = PBXFileReference; lastKnownFileType = file; path = palmnew.gmf; sourceTree = "<group>"; };
+		04F8D9C51A1769B10042A158 /* sphere.gmf */ = {isa = PBXFileReference; lastKnownFileType = file; path = sphere.gmf; sourceTree = "<group>"; };
+		04F8D9D11A1771460042A158 /* Skybox.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Skybox.metal; sourceTree = "<group>"; };
+		04F8D9D31A1776590042A158 /* skybox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = skybox.png; sourceTree = "<group>"; };
+		04F8D9D51A177AB00042A158 /* grass.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grass.png; sourceTree = "<group>"; };
+		04F8D9D61A177AB00042A158 /* heightmap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = heightmap.png; sourceTree = "<group>"; };
+		04F8D9D91A177C680042A158 /* KPTHeightMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KPTHeightMap.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		04F8D9741A175E630042A158 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		04F8D98B1A175E630042A158 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		04F8D96E1A175E630042A158 = {
+			isa = PBXGroup;
+			children = (
+				04F8D9791A175E630042A158 /* RescueKopter */,
+				04F8D9911A175E630042A158 /* RescueKopterTests */,
+				04F8D9781A175E630042A158 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		04F8D9781A175E630042A158 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				04F8D9771A175E630042A158 /* RescueKopter.app */,
+				04F8D98E1A175E630042A158 /* RescueKopterTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		04F8D9791A175E630042A158 /* RescueKopter */ = {
+			isa = PBXGroup;
+			children = (
+				04F8D9B91A1769B10042A158 /* Resources */,
+				04F8D9B11A1763690042A158 /* ViewControllers */,
+				04F8D9B01A1763610042A158 /* Gameplay */,
+				04F8D9AB1A17621E0042A158 /* Utilities */,
+				04F8D99E1A1761710042A158 /* Geom */,
+				04F8D97C1A175E630042A158 /* AppDelegate.swift */,
+				04F8D9821A175E630042A158 /* Main.storyboard */,
+				04F8D9851A175E630042A158 /* Images.xcassets */,
+				04F8D9871A175E630042A158 /* LaunchScreen.xib */,
+				04F8D97A1A175E630042A158 /* Supporting Files */,
+			);
+			path = RescueKopter;
+			sourceTree = "<group>";
+		};
+		04F8D97A1A175E630042A158 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				04F8D97B1A175E630042A158 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		04F8D9911A175E630042A158 /* RescueKopterTests */ = {
+			isa = PBXGroup;
+			children = (
+				04F8D9941A175E630042A158 /* RescueKopterTests.swift */,
+				04F8D9921A175E630042A158 /* Supporting Files */,
+			);
+			path = RescueKopterTests;
+			sourceTree = "<group>";
+		};
+		04F8D9921A175E630042A158 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				04F8D9931A175E630042A158 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		04F8D99E1A1761710042A158 /* Geom */ = {
+			isa = PBXGroup;
+			children = (
+				04F8D99F1A1761710042A158 /* Math.swift */,
+				04F8D9A01A1761710042A158 /* Matrix33.swift */,
+				04F8D9A11A1761710042A158 /* Matrix34.swift */,
+				04F8D9A21A1761710042A158 /* Quaternion.swift */,
+				04F8D9A31A1761710042A158 /* Vector2.swift */,
+				04F8D9A41A1761710042A158 /* Vector3.swift */,
+			);
+			path = Geom;
+			sourceTree = SOURCE_ROOT;
+		};
+		04F8D9AB1A17621E0042A158 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				04F8D9AC1A1762360042A158 /* Generic.swift */,
+				04F8D9AE1A1762960042A158 /* Utilities.swift */,
+			);
+			name = Utilities;
+			sourceTree = "<group>";
+		};
+		04F8D9B01A1763610042A158 /* Gameplay */ = {
+			isa = PBXGroup;
+			children = (
+				04F8D9D11A1771460042A158 /* Skybox.metal */,
+				04F8D9801A175E630042A158 /* Shaders.metal */,
+				04F8D9B21A17643B0042A158 /* ShaderCommon.h */,
+				04F8D9B31A1765060042A158 /* KPTTextureManager.swift */,
+				04F8D9B51A1765830042A158 /* KPTModelManager.swift */,
+				04F8D9B71A17662E0042A158 /* KPTModel.swift */,
+				04F8D9D91A177C680042A158 /* KPTHeightMap.swift */,
+				042F17E91A1792EA00614DB3 /* KPTMapModel.swift */,
+			);
+			name = Gameplay;
+			sourceTree = "<group>";
+		};
+		04F8D9B11A1763690042A158 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				04F8D97E1A175E630042A158 /* KPTGameViewController.swift */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		04F8D9B91A1769B10042A158 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				04F8D9D51A177AB00042A158 /* grass.png */,
+				04F8D9D61A177AB00042A158 /* heightmap.png */,
+				04F8D9D31A1776590042A158 /* skybox.png */,
+				04F8D9BA1A1769B10042A158 /* checker.png */,
+				04F8D9BB1A1769B10042A158 /* Mesh1_surf.png */,
+				04F8D9BC1A1769B10042A158 /* Object01.png */,
+				04F8D9BD1A1769B10042A158 /* palmnew.gmf */,
+				04F8D9C51A1769B10042A158 /* sphere.gmf */,
+			);
+			path = Resources;
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		04F8D9761A175E630042A158 /* RescueKopter */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 04F8D9981A175E630042A158 /* Build configuration list for PBXNativeTarget "RescueKopter" */;
+			buildPhases = (
+				04F8D9731A175E630042A158 /* Sources */,
+				04F8D9741A175E630042A158 /* Frameworks */,
+				04F8D9751A175E630042A158 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RescueKopter;
+			productName = RescueKopter;
+			productReference = 04F8D9771A175E630042A158 /* RescueKopter.app */;
+			productType = "com.apple.product-type.application";
+		};
+		04F8D98D1A175E630042A158 /* RescueKopterTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 04F8D99B1A175E630042A158 /* Build configuration list for PBXNativeTarget "RescueKopterTests" */;
+			buildPhases = (
+				04F8D98A1A175E630042A158 /* Sources */,
+				04F8D98B1A175E630042A158 /* Frameworks */,
+				04F8D98C1A175E630042A158 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				04F8D9901A175E630042A158 /* PBXTargetDependency */,
+			);
+			name = RescueKopterTests;
+			productName = RescueKopterTests;
+			productReference = 04F8D98E1A175E630042A158 /* RescueKopterTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		04F8D96F1A175E630042A158 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = "Marcin Pedzimaz";
+				TargetAttributes = {
+					04F8D9761A175E630042A158 = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+					04F8D98D1A175E630042A158 = {
+						CreatedOnToolsVersion = 6.1.1;
+						TestTargetID = 04F8D9761A175E630042A158;
+					};
+				};
+			};
+			buildConfigurationList = 04F8D9721A175E630042A158 /* Build configuration list for PBXProject "RescueKopter" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 04F8D96E1A175E630042A158;
+			productRefGroup = 04F8D9781A175E630042A158 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				04F8D9761A175E630042A158 /* RescueKopter */,
+				04F8D98D1A175E630042A158 /* RescueKopterTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		04F8D9751A175E630042A158 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04F8D9D01A1769B10042A158 /* sphere.gmf in Resources */,
+				04F8D9841A175E630042A158 /* Main.storyboard in Resources */,
+				04F8D9D71A177AB00042A158 /* grass.png in Resources */,
+				04F8D9891A175E630042A158 /* LaunchScreen.xib in Resources */,
+				04F8D9C71A1769B10042A158 /* Mesh1_surf.png in Resources */,
+				04F8D9D41A1776590042A158 /* skybox.png in Resources */,
+				04F8D9861A175E630042A158 /* Images.xcassets in Resources */,
+				04F8D9C61A1769B10042A158 /* checker.png in Resources */,
+				04F8D9C91A1769B10042A158 /* palmnew.gmf in Resources */,
+				04F8D9C81A1769B10042A158 /* Object01.png in Resources */,
+				04F8D9D81A177AB00042A158 /* heightmap.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		04F8D98C1A175E630042A158 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		04F8D9731A175E630042A158 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04F8D9811A175E630042A158 /* Shaders.metal in Sources */,
+				04F8D9B41A1765060042A158 /* KPTTextureManager.swift in Sources */,
+				04F8D9A61A1761710042A158 /* Matrix33.swift in Sources */,
+				04F8D9DA1A177C680042A158 /* KPTHeightMap.swift in Sources */,
+				04F8D9B61A1765830042A158 /* KPTModelManager.swift in Sources */,
+				04F8D9AF1A1762960042A158 /* Utilities.swift in Sources */,
+				04F8D9D21A1771460042A158 /* Skybox.metal in Sources */,
+				04F8D9B81A17662E0042A158 /* KPTModel.swift in Sources */,
+				04F8D97F1A175E630042A158 /* KPTGameViewController.swift in Sources */,
+				04F8D97D1A175E630042A158 /* AppDelegate.swift in Sources */,
+				04F8D9A81A1761710042A158 /* Quaternion.swift in Sources */,
+				04F8D9AD1A1762360042A158 /* Generic.swift in Sources */,
+				04F8D9A91A1761710042A158 /* Vector2.swift in Sources */,
+				04F8D9A51A1761710042A158 /* Math.swift in Sources */,
+				042F17EA1A1792EA00614DB3 /* KPTMapModel.swift in Sources */,
+				04F8D9AA1A1761710042A158 /* Vector3.swift in Sources */,
+				04F8D9A71A1761710042A158 /* Matrix34.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		04F8D98A1A175E630042A158 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04F8D9951A175E630042A158 /* RescueKopterTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		04F8D9901A175E630042A158 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 04F8D9761A175E630042A158 /* RescueKopter */;
+			targetProxy = 04F8D98F1A175E630042A158 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		04F8D9821A175E630042A158 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				04F8D9831A175E630042A158 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		04F8D9871A175E630042A158 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				04F8D9881A175E630042A158 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		04F8D9961A175E630042A158 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		04F8D9971A175E630042A158 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		04F8D9991A175E630042A158 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = RescueKopter/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		04F8D99A1A175E630042A158 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = RescueKopter/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		04F8D99C1A175E630042A158 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = RescueKopterTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RescueKopter.app/RescueKopter";
+			};
+			name = Debug;
+		};
+		04F8D99D1A175E630042A158 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = RescueKopterTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RescueKopter.app/RescueKopter";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		04F8D9721A175E630042A158 /* Build configuration list for PBXProject "RescueKopter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04F8D9961A175E630042A158 /* Debug */,
+				04F8D9971A175E630042A158 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		04F8D9981A175E630042A158 /* Build configuration list for PBXNativeTarget "RescueKopter" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04F8D9991A175E630042A158 /* Debug */,
+				04F8D99A1A175E630042A158 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		04F8D99B1A175E630042A158 /* Build configuration list for PBXNativeTarget "RescueKopterTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04F8D99C1A175E630042A158 /* Debug */,
+				04F8D99D1A175E630042A158 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 04F8D96F1A175E630042A158 /* Project object */;
+}

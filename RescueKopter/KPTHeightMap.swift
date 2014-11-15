@@ -8,6 +8,36 @@
 
 import UIKit
 
+struct mapDataStruct {
+    
+    var object: UInt32 //BGRA!
+    
+    var playerSpawn: UInt8 {
+        
+        return UInt8(object & 0x000000FF)
+    }
+    
+    var ground: UInt8 {
+        
+        return UInt8((object & 0x0000FF00) >> 8)
+    }
+    
+    var grass: UInt8 {
+        
+        return UInt8((object & 0x00FF0000) >> 16)
+    }
+    
+    var wall: UInt8 {
+        
+        return UInt8((object & 0xFF000000) >> 24)
+    }
+    
+    var desc : String {
+    
+        return "(\(self.ground),\(self.grass),\(self.wall),\(self.playerSpawn))"
+    }
+}
+
 func makeNormal(x1:Float32, y1:Float32, z1:Float32,
                 x2:Float32, y2:Float32, z2:Float32,
                 x3:Float32, y3:Float32, z3:Float32,
@@ -25,71 +55,100 @@ func makeNormal(x1:Float32, y1:Float32, z1:Float32,
     rz = ax*by - bx*ay
 }
 
+func createARGBBitmapContext(inImage: CGImage) -> CGContext {
+    
+    var bitmapByteCount = 0
+    var bitmapBytesPerRow = 0
+    
+    let pixelsWide = CGImageGetWidth(inImage)
+    let pixelsHigh = CGImageGetHeight(inImage)
+    
+    bitmapBytesPerRow = Int(pixelsWide) * 4
+    bitmapByteCount = bitmapBytesPerRow * Int(pixelsHigh)
+    
+    let colorSpace = CGColorSpaceCreateDeviceRGB()
+    let bitmapData = malloc(CUnsignedLong(bitmapByteCount))
+    let bitmapInfo = CGBitmapInfo( UInt32(CGImageAlphaInfo.PremultipliedFirst.rawValue) )
+    
+    let context = CGBitmapContextCreate(bitmapData,
+        pixelsWide,
+        pixelsHigh,
+        CUnsignedLong(8),
+        CUnsignedLong(bitmapBytesPerRow),
+        colorSpace,
+        bitmapInfo)
+    
+    return context
+}
+
+func loadMapData(mapName: String) -> (data: UnsafeMutablePointer<Void>, width: UInt, height: UInt) {
+    
+    let image = UIImage(named: mapName)
+    let inImage = image?.CGImage
+    
+    let cgContext = createARGBBitmapContext(inImage!)
+    
+    let imageWidth = CGImageGetWidth(inImage)
+    let imageHeight = CGImageGetHeight(inImage)
+    
+    var rect = CGRectZero
+    rect.size.width = CGFloat(imageWidth)
+    rect.size.height = CGFloat(imageHeight)
+    
+    CGContextDrawImage(cgContext, rect, inImage)
+    
+    let dataPointer = CGBitmapContextGetData(cgContext)
+    
+    return (dataPointer, imageWidth, imageHeight)
+}
+
 class KPTHeightMap {
    
-    private var rawData: UnsafeMutablePointer<Void>! = nil
-    private var rawNormals: UnsafeMutablePointer<Void>! = nil
-    
-    internal var data = UnsafeMutablePointer<Float32>()
-    internal var normal = UnsafeMutablePointer<Float32>()
+    internal var data = [Float32]()
+    internal var normal = [Float32]()
     internal var w: Int = 0
     internal var h: Int = 0
     
     init(filename: String) {
     
-        var texStruct = imageStruct()
+        var mapData = loadMapData(filename)
         
-        createImageData(filename, &texStruct)
+        w = Int(mapData.width)
+        h = Int(mapData.height)
         
-        if let bitmapData = texStruct.bitmapData {
-            
-            if texStruct.hasAlpha == false && texStruct.bitsPerPixel >= 24 {
+        data = [Float32](count: w*h, repeatedValue: 0.0)
+        normal = [Float32](count: w*h*3, repeatedValue: 0.0)
+        
+        var index:Int = 0
+        
+        var dataStruct = UnsafePointer<mapDataStruct>(mapData.data)
+        
+        for var ax=0; ax < w; ax++ {
+            for var ay=0; ay < h; ay++ {
                 
-                convertToRGBA(&texStruct)
+                var imgData = dataStruct[ax + ay * w]
+                
+                println(imgData.desc)
+                
+                data[index] = Float32(imgData.ground)
+                index++
             }
-            
-            //create data and normal info
-            
-            w = Int(texStruct.width)
-            h = Int(texStruct.height)
-            
-            rawData = malloc(texStruct.width * texStruct.height)
-            rawNormals = malloc(texStruct.width * texStruct.height)
-            
-            data = UnsafeMutablePointer<Float32>(rawData)
-            normal = UnsafeMutablePointer<Float32>(rawNormals)
-    
-            var b = texStruct.bitmapData!
-            var memSize = (w * h)
-            
-            var index:Int = 0
-            
-            while(index < memSize) {
-                
-                var src = UnsafeMutablePointer<UInt8>(b + index)
-                
-                //println("(\(index) / \(memSize)) dst: \(data.memory) src: \(src.memory)")
-                
-                data.memory = Float32(src.memory)
-                data++
-                
-                index += 4
-            }
-            
-            //normals calcualtion
-            
-            var ax:Float32 = 0,
-            ay:Float32 = 0,
-            az:Float32 = 0,
-            sx:Float32 = 0,
-            sy:Float32 = 0,
-            sz:Float32 = 0,
-            cx:Float32 = 0,
-            cy:Float32 = 0
-
-            var x:Int = 0, y:Int = 0
-            
-            for( x = 0; x < w; x++) {
+        }
+        
+        //normals calcualtion
+        
+        var ax:Float32 = 0,
+        ay:Float32 = 0,
+        az:Float32 = 0,
+        sx:Float32 = 0,
+        sy:Float32 = 0,
+        sz:Float32 = 0,
+        cx:Float32 = 0,
+        cy:Float32 = 0
+        
+        var x:Int = 0, y:Int = 0
+        
+        for( x = 0; x < w; x++) {
             for( y = 0; y < h; y++) {
                 
                 sx = 0
@@ -99,50 +158,54 @@ class KPTHeightMap {
                 cx = Float32(x) * 2.0
                 cy = Float32(y) * 2.0
                 
-//                makeNormal( cx, At(x,y:y),cy ,cx+2, At(x+1,y:y-1),cy-2, cx+2,At(x+1,y:y),cy, &ax, &ay, &az )
-//                sx += ax
-//                sy += ay
-//                sz += az
-//                
-//                makeNormal( cx, At(x,y:y),cy ,cx+2, At(x+1,y:y),cy,cx, At(x,y:y+1),cy+2, &ax, &ay, &az )
-//                sx += ax
-//                sy += ay
-//                sz += az
-//                
-//                makeNormal( cx, At(x,y:y),cy ,cx ,At(x,y:y+1),cy+2, cx-2,At(x-1,y:y+1),cy+2, &ax, &ay, &az )
-//                sx += ax
-//                sy += ay
-//                sz += az
-//                
-//                makeNormal( cx, At(x,y:y),cy ,cx-2 ,At(x-1,y:y+1),cy+2, cx-2,At(x-1,y:y),cy, &ax, &ay, &az )
-//                sx += ax
-//                sy += ay
-//                sz += az
-//                
-//                makeNormal( cx, At(x,y:y),cy ,cx-2 ,At(x-1,y:y),cy, cx,At(x,y:y-1),cy-2, &ax, &ay, &az )
-//                sx += ax
-//                sy += ay
-//                sz += az
+                makeNormal( cx, At(x,y:y),cy ,cx+2, At(x+1,y:y-1),cy-2, cx+2,At(x+1,y:y),cy, &ax, &ay, &az )
+                sx += ax
+                sy += ay
+                sz += az
                 
-                var N = normAt(x, y: y, d:0)
+                makeNormal( cx, At(x,y:y),cy ,cx+2, At(x+1,y:y),cy,cx, At(x,y:y+1),cy+2, &ax, &ay, &az )
+                sx += ax
+                sy += ay
+                sz += az
                 
-                N[ 0 ] = 0 //sx
-                N[ 1 ] = 1 //sy
-                N[ 2 ] = 0 //sz
+                makeNormal( cx, At(x,y:y),cy ,cx ,At(x,y:y+1),cy+2, cx-2,At(x-1,y:y+1),cy+2, &ax, &ay, &az )
+                sx += ax
+                sy += ay
+                sz += az
                 
-                //println("Normal(\(N[0]),\(N[1]),\(N[2]))")
+                makeNormal( cx, At(x,y:y),cy ,cx-2 ,At(x-1,y:y+1),cy+2, cx-2,At(x-1,y:y),cy, &ax, &ay, &az )
+                sx += ax
+                sy += ay
+                sz += az
                 
-                var l:Float32 = sqrt(sx*sx + sy*sy + sz*sz)
+                makeNormal( cx, At(x,y:y),cy ,cx-2 ,At(x-1,y:y),cy, cx,At(x,y:y-1),cy-2, &ax, &ay, &az )
+                sx += ax
+                sy += ay
+                sz += az
                 
-                if l > 0.0001 {
-                    
-                    N[ 0 ] = sx / l
-                    N[ 1 ] = sy / l
-                    N[ 2 ] = sz / l
-                }
+                updateNormal(x, y: y, nx: sx, ny: sy, nz: sz)
                 
             }
-            }
+        }
+    }
+    
+    func updateNormal(x:Int,y:Int, nx:Float32, ny:Float32, nz:Float32) {
+    
+        var index: Int = ( x + y * w ) * 3
+    
+        var l:Float32 = sqrt(nx*nx + ny*ny + nz*nz)
+        
+        if l > 0.0001 {
+            
+            normal[ index+0 ] = nx / l
+            normal[ index+1 ] = ny / l
+            normal[ index+2 ] = nz / l
+        }
+        else {
+        
+            normal[index+0] = nx
+            normal[index+1] = ny
+            normal[index+2] = nz
         }
     }
     
@@ -158,26 +221,29 @@ class KPTHeightMap {
         return data[vertexIndex]
     }
     
-    func normAt(x:Int, y:Int, d:Int) -> UnsafeMutablePointer<Float32> {
+    func normAt(x:Int, y:Int, d:Int) -> Float32 {
     
+        var rx = x
+        var ry = y
+        
         if x < 0 || y < 0 || x >= w || y >= h {
         
-            var empty = UnsafeMutablePointer<Float32>.alloc(3)
-                empty.initialize(0)
-            
-            return empty
+            rx = 0
+            ry = 0
         }
         
-        var index: Int = ( x + y * w ) * 3 + d
+        var index: Int = ( rx + ry * w ) * 3 + d
         
-        return UnsafeMutablePointer<Float32>(normal + index)
+        return normal[index]
     }
     
-    func normalVectorAt(x:Int, y:Int, d:Int) -> Vector3 {
+    func normalVectorAt(x:Int,y:Int) -> Vector3 {
     
-        var N = normAt(x, y: y, d:d)
+        var nx = normAt(x, y: y, d: 0)
+        var ny = normAt(x, y: y, d: 1)
+        var nz = normAt(x, y: y, d: 2)
         
-        return Vector3(x:N[0],y:N[1],z:N[2])
+        return Vector3(x:nx, y:ny, z:nz)
     }
     
     func GetHeight(x: Float32, z:Float32 ) -> Float32 {
@@ -245,18 +311,18 @@ class KPTHeightMap {
         rx -= Float32(a)
         rz -= Float32(b)
         
-        w1 = z * ( normalVectorAt(a,y:b+1,d:0).x - normalVectorAt(a,y:b,d:0).x ) + normalVectorAt(a,y:b,d:0).x
-        w2 = z * ( normalVectorAt(a+1,y:b+1,d:0).x - normalVectorAt(a+1,y:b,d:0).x ) + normalVectorAt(a+1,y:b,d:0).x
+        w1 = z * ( normAt(a,y:b+1,d:0) - normAt(a,y:b,d:0) ) + normAt(a,y:b,d:0)
+        w2 = z * ( normAt(a+1,y:b+1,d:0) - normAt(a+1,y:b,d:0) ) + normAt(a+1,y:b,d:0)
         
         v.x =  w1 + x*( w2 - w1 )
         
-        w1 = z * ( normalVectorAt(a,y:b+1,d:1).x - normalVectorAt(a,y:b,d:1).x ) + normalVectorAt(a,y:b,d:1).x
-        w2 = z * ( normalVectorAt(a+1,y:b+1,d:1).x - normalVectorAt(a+1,y:b,d:1).x ) + normalVectorAt(a+1,y:b,d:1).x
+        w1 = z * ( normAt(a,y:b+1,d:1) - normAt(a,y:b,d:1) ) + normAt(a,y:b,d:1)
+        w2 = z * ( normAt(a+1,y:b+1,d:1) - normAt(a+1,y:b,d:1) ) + normAt(a+1,y:b,d:1)
         
         v.y =  w1 + x*( w2 - w1 )
         
-        w1 = z * ( normalVectorAt(a,y:b+1,d:2).x - normalVectorAt(a,y:b,d:2).x ) + normalVectorAt(a,y:b,d:2).x
-        w2 = z * ( normalVectorAt(a+1,y:b+1,d:2).x - normalVectorAt(a+1,y:b,d:2).x ) + normalVectorAt(a+1,y:b,d:2).x
+        w1 = z * ( normAt(a,y:b+1,d:2) - normAt(a,y:b,d:2) ) + normAt(a,y:b,d:2)
+        w2 = z * ( normAt(a+1,y:b+1,d:2) - normAt(a+1,y:b,d:2) ) + normAt(a+1,y:b,d:2)
         
         v.z =  w1 + x*( w2 - w1 )
 
@@ -264,10 +330,5 @@ class KPTHeightMap {
         
         return v
     }
-    
-    deinit {
-    
-        free(rawData)
-        free(rawNormals)
-    }
+
 }

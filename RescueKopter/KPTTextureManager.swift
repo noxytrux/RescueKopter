@@ -44,7 +44,7 @@ class KPTTextureManager: KPTSingletonProtocol {
             var descriptor = MTLTextureDescriptor.texture2DDescriptorWithPixelFormat(.RGBA8Unorm,
                 width: Int(texStruct.width),
                 height: Int(texStruct.height),
-                mipmapped: false)
+                mipmapped: true)
             
             var loadedTexture = device.newTextureWithDescriptor(descriptor)
             

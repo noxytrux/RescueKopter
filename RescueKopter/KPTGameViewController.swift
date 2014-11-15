@@ -43,8 +43,8 @@ class KPTGameViewController: UIViewController {
     var defaultLibrary: MTLLibrary! = nil
     
     //vector for viewMatrix
-    var eyeVec = Vector3(x: 0.0,y: 2.0,z: 3.0)
-    var dirVec = Vector3(x: 0.0,y: -0.234083,z: -0.9)
+    var eyeVec = Vector3(x: 0.0,y: 15.0,z: 3.0)
+    var dirVec = Vector3(x: 0.3,y: -0.234083,z: -0.9)
     var upVec = Vector3(x: 0, y: 1, z: 0)
     
     var loadedModels =  [KPTModel]()

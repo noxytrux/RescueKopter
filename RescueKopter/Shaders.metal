@@ -40,7 +40,7 @@ fragment float4 basicRenderFragment(VertexOutput inFrag [[stage_in]],
 {
     constexpr sampler linear_sampler(min_filter::linear, mag_filter::linear, address::repeat);
     
-    float4 outColor = diffuseTexture.sample(linear_sampler, inFrag.v_texcoord); //* 16.0
+    float4 outColor = diffuseTexture.sample(linear_sampler, inFrag.v_texcoord * 4.0);
     
     if(outColor.a < 0.5) {
         

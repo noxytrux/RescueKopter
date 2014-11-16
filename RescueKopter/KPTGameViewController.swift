@@ -70,6 +70,7 @@ class KPTGameViewController: UIViewController {
     var inverted = Matrix33()
     var baseStiencilState: MTLDepthStencilState! = nil
     var upRotation: Float = 0
+    var modelDirection: Float = 0
     
     //MOTION
     
@@ -377,24 +378,25 @@ class KPTGameViewController: UIViewController {
         if let kopter = kopter {
             
             var kopterRotation = min(max(upRotation, -0.4), 0.4)
+            modelDirection += kopterRotation * 0.5
             
             var rotX = Matrix33()
             rotX.rotX(Float(M_PI_2))
             
             var rotY = Matrix33()
             rotY.rotY(Float(M_PI))
-            
+        
             var rotK1 = Matrix33()
             rotK1.rotY(kopterRotation)
             
             var rotK2 = Matrix33()
-            rotK2.rotZ(kopterRotation * 0.5)
+            rotK2.rotZ(modelDirection + kopterRotation * 0.5)
             
             kopter.modelMatrix.M = rotX * rotY * rotK1 * rotK2
             
             //flying
             var speed:Float = 5.0
-            var pos = Vector3(x: Float32(sin(uprotationValue) * speed * Float(delta)), y: 0.0, z: Float32(cos(uprotationValue) * speed * Float(delta)))
+            var pos = Vector3(x: Float32(sin(modelDirection) * speed * Float(delta)), y: 0.0, z: Float32(cos(modelDirection) * speed * Float(delta)))
             
             kopter.modelMatrix.t -= pos
             var px: Float32 = kopter.modelMatrix.t.x + 256.0
@@ -402,14 +404,20 @@ class KPTGameViewController: UIViewController {
             
             kopter.modelMatrix.t.y = fabs(heightMap!.At(Int(px/2.0), y: Int(pz/2.0)) / 8.0 ) + 10.0
             
-            eyeVec = kopter.modelMatrix.t + Vector3(x:0,y:2,z:15)
+            eyeVec = kopter.modelMatrix.t + (pos * 36.0)
+            eyeVec.y += 2
+            
+            dirVec = eyeVec - kopter.modelMatrix.t
+            dirVec.normalize()
+            dirVec.setNegative()
+            
+            dirVec.y = -0.23
         }
     
         //update lookAt matrix
         cameraMatrix = matrix44MakeLookAt(eyeVec, eyeVec+dirVec, realUp)
         
         //udpate sun position and color
-        
         sunPosition.y += Float32(delta) * 0.05
         sunPosition.x += Float32(delta) * 0.05
         

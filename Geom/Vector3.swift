@@ -265,3 +265,8 @@ func /= (inout left: Vector3, right: Vector3) {
     
     left = left / right
 }
+
+func /= (inout left: Vector3, right: Float32) {
+    
+    left = left / right
+}

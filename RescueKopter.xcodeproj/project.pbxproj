@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		042F17EA1A1792EA00614DB3 /* KPTMapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042F17E91A1792EA00614DB3 /* KPTMapModel.swift */; };
+		042F17EC1A17B85D00614DB3 /* helicopter.gmf in Resources */ = {isa = PBXBuildFile; fileRef = 042F17EB1A17B73C00614DB3 /* helicopter.gmf */; };
 		04F8D97D1A175E630042A158 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D97C1A175E630042A158 /* AppDelegate.swift */; };
 		04F8D97F1A175E630042A158 /* KPTGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D97E1A175E630042A158 /* KPTGameViewController.swift */; };
 		04F8D9811A175E630042A158 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9801A175E630042A158 /* Shaders.metal */; };
@@ -50,6 +51,7 @@
 
 /* Begin PBXFileReference section */
 		042F17E91A1792EA00614DB3 /* KPTMapModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KPTMapModel.swift; sourceTree = "<group>"; };
+		042F17EB1A17B73C00614DB3 /* helicopter.gmf */ = {isa = PBXFileReference; lastKnownFileType = file; path = helicopter.gmf; sourceTree = "<group>"; };
 		04F8D9771A175E630042A158 /* RescueKopter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RescueKopter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04F8D97B1A175E630042A158 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04F8D97C1A175E630042A158 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -211,6 +213,7 @@
 		04F8D9B91A1769B10042A158 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				042F17EB1A17B73C00614DB3 /* helicopter.gmf */,
 				04F8D9D51A177AB00042A158 /* grass.png */,
 				04F8D9D61A177AB00042A158 /* heightmap.png */,
 				04F8D9D31A1776590042A158 /* skybox.png */,
@@ -303,6 +306,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				042F17EC1A17B85D00614DB3 /* helicopter.gmf in Resources */,
 				04F8D9D01A1769B10042A158 /* sphere.gmf in Resources */,
 				04F8D9841A175E630042A158 /* Main.storyboard in Resources */,
 				04F8D9D71A177AB00042A158 /* grass.png in Resources */,

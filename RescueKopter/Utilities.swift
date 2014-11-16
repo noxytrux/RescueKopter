@@ -101,3 +101,98 @@ func convertToRGBA(inout texInfo: imageStruct) {
     texInfo.bitsPerPixel = 32
     texInfo.hasAlpha = true
 }
+
+struct mapDataStruct {
+    
+    var object: UInt32 //BGRA!
+    
+    var playerSpawn: UInt8 {
+        
+        return UInt8(object & 0x000000FF)
+    }
+    
+    var ground: UInt8 {
+        
+        return UInt8((object & 0x0000FF00) >> 8)
+    }
+    
+    var grass: UInt8 {
+        
+        return UInt8((object & 0x00FF0000) >> 16)
+    }
+    
+    var wall: UInt8 {
+        
+        return UInt8((object & 0xFF000000) >> 24)
+    }
+    
+    var desc : String {
+        
+        return "(\(self.ground),\(self.grass),\(self.wall),\(self.playerSpawn))"
+    }
+}
+
+func makeNormal(x1:Float32, y1:Float32, z1:Float32,
+    x2:Float32, y2:Float32, z2:Float32,
+    x3:Float32, y3:Float32, z3:Float32,
+    inout rx:Float32, inout ry:Float32, inout rz:Float32 )
+{
+    var ax:Float32 = x3-x1,
+    ay:Float32 = y3-y1,
+    az:Float32 = z3-z1,
+    bx:Float32 = x2-x1,
+    by:Float32 = y2-y1,
+    bz:Float32 = z2-z1
+    
+    rx = ay*bz - by*az
+    ry = bx*az - ax*bz
+    rz = ax*by - bx*ay
+}
+
+func createARGBBitmapContext(inImage: CGImage) -> CGContext {
+    
+    var bitmapByteCount = 0
+    var bitmapBytesPerRow = 0
+    
+    let pixelsWide = CGImageGetWidth(inImage)
+    let pixelsHigh = CGImageGetHeight(inImage)
+    
+    bitmapBytesPerRow = Int(pixelsWide) * 4
+    bitmapByteCount = bitmapBytesPerRow * Int(pixelsHigh)
+    
+    let colorSpace = CGColorSpaceCreateDeviceRGB()
+    let bitmapData = malloc(CUnsignedLong(bitmapByteCount))
+    let bitmapInfo = CGBitmapInfo( UInt32(CGImageAlphaInfo.PremultipliedFirst.rawValue) )
+    
+    let context = CGBitmapContextCreate(bitmapData,
+        pixelsWide,
+        pixelsHigh,
+        CUnsignedLong(8),
+        CUnsignedLong(bitmapBytesPerRow),
+        colorSpace,
+        bitmapInfo)
+    
+    return context
+}
+
+func loadMapData(mapName: String) -> (data: UnsafeMutablePointer<Void>, width: UInt, height: UInt) {
+    
+    let image = UIImage(named: mapName)
+    let inImage = image?.CGImage
+    
+    let cgContext = createARGBBitmapContext(inImage!)
+    
+    let imageWidth = CGImageGetWidth(inImage)
+    let imageHeight = CGImageGetHeight(inImage)
+    
+    var rect = CGRectZero
+    rect.size.width = CGFloat(imageWidth)
+    rect.size.height = CGFloat(imageHeight)
+    
+    CGContextDrawImage(cgContext, rect, inImage)
+    
+    let dataPointer = CGBitmapContextGetData(cgContext)
+    
+    return (dataPointer, imageWidth, imageHeight)
+}
+

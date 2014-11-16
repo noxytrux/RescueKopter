@@ -53,8 +53,6 @@ class KPTMapModel: KPTModel {
                 vertexInfo.texCoord = Vector2(x: Float32(x)/width, y: Float32(y)/width)
                 vertexInfo.position = Vector3(x: -width + Float32(x) * 2.0, y: heightMap.At(x, y: y) / 8.0, z: -width + Float32(y) * 2.0)
                 
-                //println("pos: \(vertexInfo.position)")
-                
                 vertexData.append(vertexInfo)
             }
         }
@@ -88,4 +86,5 @@ class KPTMapModel: KPTModel {
         
         return (status, error)
     }
+    
 }

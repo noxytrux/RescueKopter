@@ -38,9 +38,9 @@ vertex VertexOutput basicRenderVertex(device Vertex *vertexData [[ buffer(0) ]],
 fragment float4 basicRenderFragment(VertexOutput inFrag [[stage_in]],
                                     texture2d<float> diffuseTexture [[ texture(0) ]])
 {
-    constexpr sampler linear_sampler(min_filter::linear, mag_filter::linear);
+    constexpr sampler linear_sampler(min_filter::linear, mag_filter::linear, address::repeat);
     
-    float4 outColor = diffuseTexture.sample(linear_sampler, inFrag.v_texcoord);
+    float4 outColor = diffuseTexture.sample(linear_sampler, inFrag.v_texcoord); //* 16.0
     
     if(outColor.a < 0.5) {
         

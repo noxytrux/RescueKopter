@@ -9,8 +9,9 @@
 import UIKit
 import Metal
 import QuartzCore
+import CoreMotion
 
-let maxFramesToBuffer = 3
+let maxFramesToBuffer = 1
 
 struct sunStructure {
     
@@ -27,6 +28,7 @@ struct matrixStructure {
 
 class KPTGameViewController: UIViewController {
     
+    @IBOutlet weak var loadingLabel: UILabel!
     let device = { MTLCreateSystemDefaultDevice() }()
     let metalLayer = { CAMetalLayer() }()
     
@@ -43,8 +45,8 @@ class KPTGameViewController: UIViewController {
     var defaultLibrary: MTLLibrary! = nil
     
     //vector for viewMatrix
-    var eyeVec = Vector3(x: 0.0,y: 15.0,z: 3.0)
-    var dirVec = Vector3(x: 0.3,y: -0.234083,z: -0.9)
+    var eyeVec = Vector3(x: 0.0,y: 2,z: 3.0)
+    var dirVec = Vector3(x: 0.0,y: -0.23,z: -1.0)
     var upVec = Vector3(x: 0, y: 1, z: 0)
     
     var loadedModels =  [KPTModel]()
@@ -67,8 +69,15 @@ class KPTGameViewController: UIViewController {
     
     var inverted = Matrix33()
     var baseStiencilState: MTLDepthStencilState! = nil
+    var upRotation: Float = 0
     
+    //MOTION
     
+    let manager = CMMotionManager()
+    let queue = NSOperationQueue()
+
+    weak var kopter:KPTModel? = nil
+    weak var heightMap:KPTHeightMap? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,7 +90,7 @@ class KPTGameViewController: UIViewController {
         
         view.layer.addSublayer(metalLayer)
         view.opaque = true
-        view.backgroundColor = nil
+        view.backgroundColor = UIColor.whiteColor()
         
         commandQueue = device.newCommandQueue()
         commandQueue.label = "main command queue"
@@ -105,11 +114,35 @@ class KPTGameViewController: UIViewController {
         //set unifor buffers
         
         sunBuffer = device.newBufferWithBytes(&sunData, length: sizeof(sunStructure), options: nil)
+
+        if manager.deviceMotionAvailable {
+            
+            manager.deviceMotionUpdateInterval = 0.01
         
-        loadGameData()
+            manager.startDeviceMotionUpdatesToQueue(queue) {
+                (motion:CMDeviceMotion!, error:NSError!) -> Void in
+                
+                let attitude:CMAttitude = motion.attitude
+                
+                self.upRotation = Float(atan2(Double(radToDeg(Float32(attitude.pitch))), Double(radToDeg(Float32(attitude.roll)))))
+            }
+        }
         
-        timer = CADisplayLink(target: self, selector: Selector("renderLoop"))
-        timer.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
+            
+            self.loadGameData()
+       
+            dispatch_sync(dispatch_get_main_queue(), { () -> Void in
+                
+                self.loadingLabel.hidden = true
+                self.view.backgroundColor = nil
+                
+                
+                self.timer = CADisplayLink(target: self, selector: Selector("renderLoop"))
+                self.timer.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
+            })
+        })
+        
     }
 
     func loadGameData() {
@@ -135,9 +168,31 @@ class KPTGameViewController: UIViewController {
             
             loadedModels.append(skyboxSphere)
         }
+        
+        var helicopter = KPTSingletonFactory<KPTModelManager>.sharedInstance().loadModel("helicopter", device: device)
+        
+        if let helicopter = helicopter {
+        
+            helicopter.modelScale = 1.0
+            helicopter.modelMatrix.t = Vector3(x:0,y:34,z:-3)
+            
+            var rotX = Matrix33()
+                rotX.rotX(Float(M_PI_2))
+            
+            var rotZ = Matrix33()
+                rotZ.rotY(Float(M_PI))
+            
+            helicopter.modelMatrix.M = rotX * rotZ
+            
+            loadedModels.append(helicopter)
+            
+            kopter = helicopter
+        }
 
         var gameMap = KPTMapModel()
             gameMap.load("heightmap", device: device)
+        
+        heightMap = gameMap.heightMap
         
         loadedModels.append(gameMap)
     }
@@ -192,7 +247,7 @@ class KPTGameViewController: UIViewController {
     
     override func prefersStatusBarHidden() -> Bool {
         
-        return false
+        return true
     }
     
     override func viewDidLayoutSubviews() {
@@ -307,8 +362,51 @@ class KPTGameViewController: UIViewController {
             delta = 0.3
         }
         
+        //update gyro:
+    
+        var uprotationValue = min(max(upRotation, -0.7), 0.7)
+
+        var realUp = upVec
+        var rotationMat = Matrix33()
+            rotationMat.rotZ(uprotationValue)
+        
+        rotationMat.multiply(upVec, dst: &realUp)
+        
+        //update kopter logic
+        
+        if let kopter = kopter {
+            
+            var kopterRotation = min(max(upRotation, -0.4), 0.4)
+            
+            var rotX = Matrix33()
+            rotX.rotX(Float(M_PI_2))
+            
+            var rotY = Matrix33()
+            rotY.rotY(Float(M_PI))
+            
+            var rotK1 = Matrix33()
+            rotK1.rotY(kopterRotation)
+            
+            var rotK2 = Matrix33()
+            rotK2.rotZ(kopterRotation * 0.5)
+            
+            kopter.modelMatrix.M = rotX * rotY * rotK1 * rotK2
+            
+            //flying
+            var speed:Float = 3.0
+            var pos = Vector3(x: Float32(sin(uprotationValue) * speed * Float(delta)), y: 0.0, z: Float32(cos(uprotationValue) * speed * Float(delta)))
+            
+            kopter.modelMatrix.t -= pos
+            var px: Float32 = kopter.modelMatrix.t.x + 256.0
+            var pz: Float32 = kopter.modelMatrix.t.z + 256.0
+            
+            kopter.modelMatrix.t.y = fabs(heightMap!.At(Int(px/2.0), y: Int(pz/2.0)) / 8.0 ) + 10.0
+            
+            eyeVec = kopter.modelMatrix.t + Vector3(x:0,y:2,z:15)
+        }
+    
         //update lookAt matrix
-        cameraMatrix = matrix44MakeLookAt(eyeVec, eyeVec+dirVec, upVec)
+        cameraMatrix = matrix44MakeLookAt(eyeVec, eyeVec+dirVec, realUp)
         
         //udpate sun position and color
         
@@ -326,8 +424,6 @@ class KPTGameViewController: UIViewController {
         
         memcpy(sunBuffer.contents(), &sunData, UInt(sizeof(sunStructure)))
         
-        //update kopter logic here:
-        
-        
     }
+    
 }

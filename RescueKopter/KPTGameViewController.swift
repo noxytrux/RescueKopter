@@ -397,14 +397,9 @@ class KPTGameViewController: UIViewController {
             //flying
             var speed:Float = 5.0
             var pos = Vector3(x: Float32(sin(modelDirection) * speed * Float(delta)), y: 0.0, z: Float32(cos(modelDirection) * speed * Float(delta)))
+            var dist = Vector3(x: Float32(sin(modelDirection) * speed), y: 0.0, z: Float32(cos(modelDirection) * speed))
             
-            kopter.modelMatrix.t -= pos
-            var px: Float32 = kopter.modelMatrix.t.x + 256.0
-            var pz: Float32 = kopter.modelMatrix.t.z + 256.0
-            
-            kopter.modelMatrix.t.y = fabs(heightMap!.At(Int(px/2.0), y: Int(pz/2.0)) / 8.0 ) + 10.0
-            
-            eyeVec = kopter.modelMatrix.t + (pos * 36.0)
+            eyeVec = kopter.modelMatrix.t + (dist * 2)
             eyeVec.y += 2
             
             dirVec = eyeVec - kopter.modelMatrix.t
@@ -412,6 +407,12 @@ class KPTGameViewController: UIViewController {
             dirVec.setNegative()
             
             dirVec.y = -0.23
+            
+            kopter.modelMatrix.t -= pos
+            var px: Float32 = kopter.modelMatrix.t.x + 256.0
+            var pz: Float32 = kopter.modelMatrix.t.z + 256.0
+            
+            kopter.modelMatrix.t.y = fabs(heightMap!.At(Int(px/2.0), y: Int(pz/2.0)) / 8.0 ) + 10.0
         }
     
         //update lookAt matrix

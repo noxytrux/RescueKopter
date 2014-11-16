@@ -393,7 +393,7 @@ class KPTGameViewController: UIViewController {
             kopter.modelMatrix.M = rotX * rotY * rotK1 * rotK2
             
             //flying
-            var speed:Float = 3.0
+            var speed:Float = 5.0
             var pos = Vector3(x: Float32(sin(uprotationValue) * speed * Float(delta)), y: 0.0, z: Float32(cos(uprotationValue) * speed * Float(delta)))
             
             kopter.modelMatrix.t -= pos

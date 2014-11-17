@@ -167,30 +167,30 @@ class KPTHeightMap {
         
         if( rz < 0.001 ) {
             
-            return mix( At(a,y:b) ,At(a+1,y:b) , x )
+            return mix( At(a,y:b) ,At(a+1,y:b) , rx )
         }
         
-        if( x < 0.001 ) {
+        if( rx < 0.001 ) {
         
-            return mix( At(a,y:b) ,At(a,y:b+1) , z )
+            return mix( At(a,y:b) ,At(a,y:b+1) , rz )
         }
         
-        if( x < z )
+        if( rx < rz )
         {
             
-            var w1 = z*( At(a,y:b+1) - At(a,y:b) ) + At(a,y:b)
-            var w2 = z*( At(a+1,y:b+1) - At(a,y:b) ) + At(a,y:b)
+            var w1 = rz*( At(a,y:b+1) - At(a,y:b) ) + At(a,y:b)
+            var w2 = rz*( At(a+1,y:b+1) - At(a,y:b) ) + At(a,y:b)
             
-            return w1 + x/z*( w2 - w1 )
+            return w1 + rx/rz*( w2 - w1 )
             
         }
         else
         {
             
-            var w1 = x*( At(a+1,y:b) - At(a,y:b) ) + At(a,y:b)
-            var w2 = x*( At(a+1,y:b+1) - At(a,y:b) ) + At(a,y:b)
+            var w1 = rx*( At(a+1,y:b) - At(a,y:b) ) + At(a,y:b)
+            var w2 = rx*( At(a+1,y:b+1) - At(a,y:b) ) + At(a,y:b)
             
-            return w1 + z/x*( w2 - w1 )
+            return w1 + rz/rx*( w2 - w1 )
         }
         
     }

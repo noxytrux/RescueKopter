@@ -10,7 +10,7 @@ import UIKit
 
 protocol KPTSingletonProtocol
 {
-    class func className() -> String
+    static func className() -> String
     
     init()
 }

@@ -398,8 +398,7 @@ class KPTGameViewController: UIViewController {
         
         sunData.sunColor = ((orangeColor * (1.0 - factor)) + (yellowColor * factor))
         
-        memcpy(sunBuffer.contents(), &sunData, UInt(sizeof(sunStructure)))
-        
+        memcpy(sunBuffer.contents(), &sunData, Int(sizeof(sunStructure)))
     }
     
     func calculatePhysic() {

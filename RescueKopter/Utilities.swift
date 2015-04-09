@@ -13,9 +13,9 @@ let kKPTDomain:String! = "KPTDomain"
 
 struct imageStruct
 {
-    var width : UInt = 0
-    var height : UInt = 0
-    var bitsPerPixel : UInt = 0
+    var width : Int = 0
+    var height : Int = 0
+    var bitsPerPixel : Int = 0
     var hasAlpha : Bool = false
     var bitmapData : UnsafeMutablePointer<Void>? = nil
 }
@@ -35,7 +35,7 @@ func createImageData(name: String!,inout texInfo: imageStruct) {
         var sizeInBytes = texInfo.width * texInfo.height * texInfo.bitsPerPixel / 8
         var bytesPerRow = texInfo.width * texInfo.bitsPerPixel / 8
         
-        texInfo.bitmapData = malloc(sizeInBytes)
+        texInfo.bitmapData = malloc(Int(sizeInBytes))
         
         let context : CGContextRef = CGBitmapContextCreate(
             texInfo.bitmapData!,
@@ -73,9 +73,9 @@ func convertToRGBA(inout texInfo: imageStruct) {
     var sourceStride = texInfo.width * texInfo.bitsPerPixel / 8
     var pointer = texInfo.bitmapData!
     
-    for var j : UInt = 0; j < texInfo.height; j++
+    for var j : Int = 0; j < texInfo.height; j++
     {
-        for var i : UInt = 0; i < sourceStride; i+=3 {
+        for var i : Int = 0; i < sourceStride; i+=3 {
             
             var position : Int = Int(i + (sourceStride * j))
             var srcPixel = UnsafeMutablePointer<UInt8>(pointer + position)
@@ -161,21 +161,21 @@ func createARGBBitmapContext(inImage: CGImage) -> CGContext {
     bitmapByteCount = bitmapBytesPerRow * Int(pixelsHigh)
     
     let colorSpace = CGColorSpaceCreateDeviceRGB()
-    let bitmapData = malloc(CUnsignedLong(bitmapByteCount))
+    let bitmapData = malloc(Int(bitmapByteCount))
     let bitmapInfo = CGBitmapInfo( UInt32(CGImageAlphaInfo.PremultipliedFirst.rawValue) )
     
     let context = CGBitmapContextCreate(bitmapData,
         pixelsWide,
         pixelsHigh,
-        CUnsignedLong(8),
-        CUnsignedLong(bitmapBytesPerRow),
+        Int(8),
+        Int(bitmapBytesPerRow),
         colorSpace,
         bitmapInfo)
     
     return context
 }
 
-func loadMapData(mapName: String) -> (data: UnsafeMutablePointer<Void>, width: UInt, height: UInt) {
+func loadMapData(mapName: String) -> (data: UnsafeMutablePointer<Void>, width: Int, height: Int) {
     
     let image = UIImage(named: mapName)
     let inImage = image?.CGImage

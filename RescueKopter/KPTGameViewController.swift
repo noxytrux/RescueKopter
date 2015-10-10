@@ -29,8 +29,9 @@ struct matrixStructure {
 class KPTGameViewController: UIViewController {
     
     @IBOutlet weak var loadingLabel: UILabel!
-    let device = { MTLCreateSystemDefaultDevice() }()
-    let metalLayer = { CAMetalLayer() }()
+    
+    let device = { MTLCreateSystemDefaultDevice()! }()
+    let metalLayer =  { CAMetalLayer() }()
     
     var commandQueue: MTLCommandQueue! = nil
     var timer: CADisplayLink! = nil
@@ -102,8 +103,8 @@ class KPTGameViewController: UIViewController {
         
         defaultLibrary = device.newDefaultLibrary()
         
-        KPTSingletonFactory<KPTModelManager>.sharedInstance()
-        KPTSingletonFactory<KPTTextureManager>.sharedInstance()
+        KPTModelManager.sharedInstance
+        KPTTextureManager.sharedInstance
         
         //generate shaders and descriptors
         
@@ -111,23 +112,25 @@ class KPTGameViewController: UIViewController {
         
         //set matrix
         
-        var aspect = Float32(view.frame.size.width/view.frame.size.height)
-        matrixData.projMatrix = matrix44MakePerspective(degToRad(60), aspect, 0.01, 15000)
+        let aspect = Float32(view.frame.size.width/view.frame.size.height)
+        matrixData.projMatrix = matrix44MakePerspective(degToRad(60), aspect: aspect, nearZ: 0.01, farZ: 15000)
         
         //set unifor buffers
         
-        sunBuffer = device.newBufferWithBytes(&sunData, length: sizeof(sunStructure), options: nil)
+        sunBuffer = device.newBufferWithBytes(&sunData, length: sizeof(sunStructure), options: .CPUCacheModeDefaultCache)
 
         if manager.deviceMotionAvailable {
             
             manager.deviceMotionUpdateInterval = 0.01
         
             manager.startDeviceMotionUpdatesToQueue(queue) {
-                (motion:CMDeviceMotion!, error:NSError!) -> Void in
+                (motion:CMDeviceMotion?, error:NSError?) -> Void in
+
+                if let motion = motion {
                 
-                let attitude:CMAttitude = motion.attitude
-                
-                self.upRotation = Float(atan2(Double(radToDeg(Float32(attitude.pitch))), Double(radToDeg(Float32(attitude.roll)))))
+                    let attitude:CMAttitude = motion.attitude
+                    self.upRotation = Float(atan2(Double(radToDeg(Float32(attitude.pitch))), Double(radToDeg(Float32(attitude.roll)))))
+                }
             }
         }
         
@@ -150,7 +153,7 @@ class KPTGameViewController: UIViewController {
 
     func loadGameData() {
     
-        var skyboxSphere = KPTSingletonFactory<KPTModelManager>.sharedInstance().loadModel("sphere", device: device)
+        let skyboxSphere = KPTModelManager.sharedInstance.loadModel("sphere", device: device)
         
         if let skyboxSphere = skyboxSphere {
             
@@ -162,7 +165,7 @@ class KPTGameViewController: UIViewController {
             skyboxSphere.setCullModeForMesh(0, mode: .None)
             skyboxSphere.setPipelineState(0, name: "skybox")
             
-            var skyboxTex = KPTSingletonFactory<KPTTextureManager>.sharedInstance().loadCubeTexture("skybox", device: device)
+            let skyboxTex = KPTTextureManager.sharedInstance.loadCubeTexture("skybox", device: device)
             
             if let skyboxTex = skyboxTex {
                 
@@ -172,7 +175,7 @@ class KPTGameViewController: UIViewController {
             loadedModels.append(skyboxSphere)
         }
         
-        var helicopter = KPTSingletonFactory<KPTModelManager>.sharedInstance().loadModel("helicopter", device: device)
+        let helicopter = KPTModelManager.sharedInstance.loadModel("helicopter", device: device)
         
         if let helicopter = helicopter {
         
@@ -192,7 +195,7 @@ class KPTGameViewController: UIViewController {
             kopter = helicopter
         }
 
-        var gameMap = KPTMapModel()
+        let gameMap = KPTMapModel()
             gameMap.load("heightmap", device: device)
         
         heightMap = gameMap.heightMap
@@ -202,50 +205,52 @@ class KPTGameViewController: UIViewController {
     
     func preparePipelineStates() {
     
-        var desc = MTLDepthStencilDescriptor()
+        let desc = MTLDepthStencilDescriptor()
         desc.depthWriteEnabled = true;
         desc.depthCompareFunction = .LessEqual;
         baseStiencilState = device.newDepthStencilStateWithDescriptor(desc)
     
         //create all pipeline states for shaders
-        var pipelineStateDescriptor = MTLRenderPipelineDescriptor()
-        var pipelineError : NSError?
+        let pipelineStateDescriptor = MTLRenderPipelineDescriptor()
         var fragmentProgram: MTLFunction?
         var vertexProgram: MTLFunction?
+    
+        do {
         
+            //BASIC SHADER
+            fragmentProgram = defaultLibrary?.newFunctionWithName("basicRenderFragment")
+            vertexProgram = defaultLibrary?.newFunctionWithName("basicRenderVertex")
+            pipelineStateDescriptor.vertexFunction = vertexProgram
+            pipelineStateDescriptor.fragmentFunction = fragmentProgram
+            pipelineStateDescriptor.colorAttachments[0].pixelFormat = .BGRA8Unorm
         
-        //BASIC SHADER
-        fragmentProgram = defaultLibrary?.newFunctionWithName("basicRenderFragment")
-        vertexProgram = defaultLibrary?.newFunctionWithName("basicRenderVertex")
-        pipelineStateDescriptor.vertexFunction = vertexProgram
-        pipelineStateDescriptor.fragmentFunction = fragmentProgram
-        pipelineStateDescriptor.colorAttachments[0].pixelFormat = .BGRA8Unorm
+            let basicState = try device.newRenderPipelineStateWithDescriptor(pipelineStateDescriptor)
         
+            pipelineStates["basic"] = basicState
+            
+        } catch {
         
-        var basicState = device.newRenderPipelineStateWithDescriptor(pipelineStateDescriptor, error: &pipelineError)
-        
-        if (basicState == nil) {
-            println("Failed to create pipeline state, error \(pipelineError)")
+            print("Failed to create pipeline state, error \(error)")
         }
-        
-        pipelineStates["basic"] = basicState
-        
-        //SKYBOX SHADER
-        
-        fragmentProgram = defaultLibrary?.newFunctionWithName("skyboxFragment")
-        vertexProgram = defaultLibrary?.newFunctionWithName("skyboxVertex")
-        pipelineStateDescriptor.vertexFunction = vertexProgram
-        pipelineStateDescriptor.fragmentFunction = fragmentProgram
-        pipelineStateDescriptor.colorAttachments[0].pixelFormat = .BGRA8Unorm
-        
-        basicState = device.newRenderPipelineStateWithDescriptor(pipelineStateDescriptor, error: &pipelineError)
-        
-        if (basicState == nil) {
-            println("Failed to create pipeline state, error \(pipelineError)")
+    
+        do {
+            
+            //SKYBOX SHADER
+            fragmentProgram = defaultLibrary?.newFunctionWithName("skyboxFragment")
+            vertexProgram = defaultLibrary?.newFunctionWithName("skyboxVertex")
+            pipelineStateDescriptor.vertexFunction = vertexProgram
+            pipelineStateDescriptor.fragmentFunction = fragmentProgram
+            pipelineStateDescriptor.colorAttachments[0].pixelFormat = .BGRA8Unorm
+            
+            let basicState = try device.newRenderPipelineStateWithDescriptor(pipelineStateDescriptor)
+     
+            pipelineStates["skybox"] = basicState
+            
+        } catch {
+    
+            print("Failed to create pipeline state, error \(error)")
         }
-        
-        pipelineStates["skybox"] = basicState
-        
+    
     }
     
     override func prefersStatusBarHidden() -> Bool {
@@ -297,63 +302,65 @@ class KPTGameViewController: UIViewController {
         let commandBuffer = commandQueue.commandBuffer()
         commandBuffer.label = "Frame command buffer"
         
-        let drawable = metalLayer.nextDrawable()
-        let renderPassDescriptor = MTLRenderPassDescriptor()
-        renderPassDescriptor.colorAttachments[0].texture = drawable.texture
-        renderPassDescriptor.colorAttachments[0].loadAction = .Clear
-        renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
-        renderPassDescriptor.colorAttachments[0].storeAction = .Store
+        if let drawable = metalLayer.nextDrawable() {
         
-        let renderEncoder = commandBuffer.renderCommandEncoderWithDescriptor(renderPassDescriptor)!
-        renderEncoder.label = "render encoder"
-        renderEncoder.setFrontFacingWinding(.CounterClockwise)
-        renderEncoder.setDepthStencilState(baseStiencilState)
-        
-        renderEncoder.setVertexBuffer(sunBuffer, offset: 0, atIndex: 2)
-        
-        //game rendering here
-        
-        var cameraViewMatrix = Matrix34(initialize: false)
-        cameraViewMatrix.setColumnMajor44(cameraMatrix)
-        
-        for model in loadedModels {
+            let renderPassDescriptor = MTLRenderPassDescriptor()
+            renderPassDescriptor.colorAttachments[0].texture = drawable.texture
+            renderPassDescriptor.colorAttachments[0].loadAction = .Clear
+            renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+            renderPassDescriptor.colorAttachments[0].storeAction = .Store
             
-            //calcualte real model view matrix
-            var modelViewMatrix = cameraViewMatrix * (model.modelMatrix * model.modelScale)
+            let renderEncoder = commandBuffer.renderCommandEncoderWithDescriptor(renderPassDescriptor)
+            renderEncoder.label = "render encoder"
+            renderEncoder.setFrontFacingWinding(.CounterClockwise)
+            renderEncoder.setDepthStencilState(baseStiencilState)
             
-            var normalMatrix = Matrix33(other: modelViewMatrix.M)
+            renderEncoder.setVertexBuffer(sunBuffer, offset: 0, atIndex: 2)
             
-            if modelViewMatrix.M.getInverse(&inverted) == true {
+            //game rendering here
+            
+            var cameraViewMatrix = Matrix34(initialize: false)
+            cameraViewMatrix.setColumnMajor44(cameraMatrix)
+            
+            for model in loadedModels {
                 
-                normalMatrix.setTransposed(inverted)
+                //calcualte real model view matrix
+                let modelViewMatrix = cameraViewMatrix * (model.modelMatrix * model.modelScale)
+                
+                var normalMatrix = Matrix33(other: modelViewMatrix.M)
+                
+                if modelViewMatrix.M.getInverse(&inverted) == true {
+                    
+                    normalMatrix.setTransposed(inverted)
+                }
+                
+                //set updated buffer info
+                modelViewMatrix.getColumnMajor44(&matrixData.viewMatrix)
+                
+                let normal4x4 = Matrix34(rot: normalMatrix, trans: Vector3(x: 0, y: 0, z: 0))
+                normal4x4.getColumnMajor44(&matrixData.normalMatrix)
+                
+                //cannot modify single value
+                let matrices = UnsafeMutablePointer<matrixStructure>(model.matrixBuffer.contents())
+                matrices.memory = matrixData
+                
+                renderEncoder.setVertexBuffer(model.matrixBuffer, offset: 0, atIndex: 1)
+                
+                model.render(renderEncoder, states: pipelineStates, shadowPass: false)
             }
             
-            //set updated buffer info
-            modelViewMatrix.getColumnMajor44(&matrixData.viewMatrix)
+            renderEncoder.endEncoding()
             
-            var normal4x4 = Matrix34(rot: normalMatrix, trans: Vector3(x: 0, y: 0, z: 0))
-            normal4x4.getColumnMajor44(&matrixData.normalMatrix)
-            
-            //cannot modify single value
-            var matrices = UnsafeMutablePointer<matrixStructure>(model.matrixBuffer.contents())
-            matrices.memory = matrixData
-            
-            renderEncoder.setVertexBuffer(model.matrixBuffer, offset: 0, atIndex: 1)
-            
-            model.render(renderEncoder, states: pipelineStates, shadowPass: false)
-        }
-        
-        renderEncoder.endEncoding()
-        
-        commandBuffer.addCompletedHandler{ [weak self] commandBuffer in
-            if let strongSelf = self {
-                dispatch_semaphore_signal(strongSelf.inflightSemaphore)
+            commandBuffer.addCompletedHandler{ [weak self] commandBuffer in
+                if let strongSelf = self {
+                    dispatch_semaphore_signal(strongSelf.inflightSemaphore)
+                }
+                return
             }
-            return
+            
+            commandBuffer.presentDrawable(drawable)
+            commandBuffer.commit()
         }
-    
-        commandBuffer.presentDrawable(drawable)
-        commandBuffer.commit()
     }
     
     func update() {
@@ -366,7 +373,7 @@ class KPTGameViewController: UIViewController {
         }
         
         //update gyro:
-        var uprotationValue = min(max(upRotation, -0.7), 0.7)
+        let uprotationValue = min(max(upRotation, -0.7), 0.7)
         
         var realUp = upVec
         var rotationMat = Matrix33()
@@ -383,7 +390,7 @@ class KPTGameViewController: UIViewController {
         }
         
         //update lookAt matrix
-        cameraMatrix = matrix44MakeLookAt(eyeVec, eyeVec+dirVec, realUp)
+        cameraMatrix = matrix44MakeLookAt(eyeVec, center: eyeVec+dirVec, up: realUp)
         
         //udpate sun position and color
         sunPosition.y += Float32(delta) * 0.05
@@ -393,8 +400,8 @@ class KPTGameViewController: UIViewController {
                                     y: -cosf(sunPosition.y),
                                     z: -sinf(sunPosition.x) * sinf(sunPosition.y))
         
-        var sun_cosy = sunData.sunVector.y
-        var factor = 0.25 + sun_cosy * 0.75
+        let sun_cosy = sunData.sunVector.y
+        let factor = 0.25 + sun_cosy * 0.75
         
         sunData.sunColor = ((orangeColor * (1.0 - factor)) + (yellowColor * factor))
         
@@ -406,7 +413,7 @@ class KPTGameViewController: UIViewController {
         //update kopter logic
         if let kopter = kopter {
             
-            var kopterRotation = min(max(upRotation, -0.4), 0.4)
+            let kopterRotation = min(max(upRotation, -0.4), 0.4)
             modelDirection += kopterRotation * 0.5
             
             var rotX = Matrix33()
@@ -424,9 +431,9 @@ class KPTGameViewController: UIViewController {
             kopter.modelMatrix.M = rotX * rotY * rotK1 * rotK2
             
             //flying
-            var speed:Float = 9.0
-            var pos = Vector3(x: Float32(sin(modelDirection) * speed * Float(fixedDelta)), y: 0.0, z: Float32(cos(modelDirection) * speed * Float(fixedDelta)))
-            var dist = Vector3(x: Float32(sin(modelDirection) * speed), y: 0.0, z: Float32(cos(modelDirection) * speed))
+            let speed:Float = 9.0
+            let pos = Vector3(x: Float32(sin(modelDirection) * speed * Float(fixedDelta)), y: 0.0, z: Float32(cos(modelDirection) * speed * Float(fixedDelta)))
+            let dist = Vector3(x: Float32(sin(modelDirection) * speed), y: 0.0, z: Float32(cos(modelDirection) * speed))
             
             eyeVec = kopter.modelMatrix.t + dist
             eyeVec.y += 2
@@ -438,8 +445,8 @@ class KPTGameViewController: UIViewController {
             dirVec.y = -0.23
             
             kopter.modelMatrix.t -= pos
-            var px: Float32 = kopter.modelMatrix.t.x + 256.0
-            var pz: Float32 = kopter.modelMatrix.t.z + 256.0
+            let px: Float32 = kopter.modelMatrix.t.x + 256.0
+            let pz: Float32 = kopter.modelMatrix.t.z + 256.0
             
             kopter.modelMatrix.t.y = fabs(heightMap!.GetHeight(px/2.0, z: pz/2.0) / 8.0 ) + 10.0
         }

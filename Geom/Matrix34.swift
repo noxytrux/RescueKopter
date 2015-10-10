@@ -29,15 +29,15 @@ struct Matrix34 {
     }
 }
 
-extension Matrix34: Printable {
+extension Matrix34: CustomStringConvertible {
     
     //dispaly in column major (OpenGL like)
     var description: String {
         
-        var row0 = "\(M[0,0]),\(M[1,0]),\(M[2,0])"
-        var row1 = "\(M[0,1]),\(M[1,1]),\(M[2,1])"
-        var row2 = "\(M[0,2]),\(M[1,2]),\(M[2,2])"
-        var row3 = "\(t.x),\(t.y),\(t.z)"
+        let row0 = "\(M[0,0]),\(M[1,0]),\(M[2,0])"
+        let row1 = "\(M[0,1]),\(M[1,1]),\(M[2,1])"
+        let row2 = "\(M[0,2]),\(M[1,2]),\(M[2,2])"
+        let row3 = "\(t.x),\(t.y),\(t.z)"
         
         return "[\(row0),0.0,\n\(row1),0.0,\n\(row2),0.0,\n\(row3),1.0]"
     }
@@ -89,7 +89,7 @@ extension Matrix34 {
     
     func getInverse(inout dest: Matrix34) -> Bool {
     
-        var status = M.getInverse(&dest.M)
+        let status = M.getInverse(&dest.M)
         dest.M.multiply(t * -1.0, dst: &dest.t)
         return status
     }

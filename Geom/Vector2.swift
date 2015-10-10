@@ -38,7 +38,7 @@ struct Vector2 {
     }
 }
 
-extension Vector2: Printable {
+extension Vector2: CustomStringConvertible {
     
     var description: String { return "[\(x),\(y)]" }
 }

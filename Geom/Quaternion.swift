@@ -60,7 +60,7 @@ struct Quaternion {
     }
 }
 
-extension Quaternion: Printable {
+extension Quaternion: CustomStringConvertible {
     
     var description: String { return "[\(x),\(y),\(z),\(w)]" }
 }
@@ -205,11 +205,11 @@ extension Quaternion {
             
             sinus = sqrt(sinus)
             
-            var angle = atan2(sinus, cosine)
-            var i_sin_angle = 1 / sinus
+            let angle = atan2(sinus, cosine)
+            let i_sin_angle = 1 / sinus
             
-            var lower_weight = sin(angle*(1-t)) * i_sin_angle
-            var upper_weight = sin(angle * t) * i_sin_angle * sign
+            let lower_weight = sin(angle*(1-t)) * i_sin_angle
+            let upper_weight = sin(angle * t) * i_sin_angle * sign
             
             w = (w * (lower_weight)) + (right.w * (upper_weight))
             x = (x * (lower_weight)) + (right.x * (upper_weight))
@@ -230,7 +230,7 @@ extension Quaternion {
         
         //v = ((*this) * v) ^ myInverse;
         
-        var left = self * v
+        let left = self * v
         
         v.x = left.w * myInverse.x + myInverse.w * left.x + left.y * myInverse.z - myInverse.y*left.z
         v.y = left.w * myInverse.y + myInverse.w * left.y + left.z * myInverse.x - myInverse.z*left.x
@@ -248,7 +248,7 @@ extension Quaternion {
         
         //v = (myInverse * v) ^ (*this);
        
-        var left = myInverse * v
+        let left = myInverse * v
         
         v.x = left.w*x + w*left.x + left.y*z - y*left.z
         v.y = left.w*y + w*left.y + left.z*x - z*left.x
@@ -257,16 +257,16 @@ extension Quaternion {
     
     func rot(v: Vector3) -> Vector3 {
         
-        var qv = Vector3(x: x,y: y,z: z)
-        var crossDot = (qv.cross(v)) * w + qv * (qv.dot(v))
+        let qv = Vector3(x: x,y: y,z: z)
+        let crossDot = (qv.cross(v)) * w + qv * (qv.dot(v))
         
         return (v * (w*w - 0.5) + crossDot) * 2.0
     }
     
     func invRot(v: Vector3) -> Vector3 {
         
-        var qv = Vector3(x: x,y: y,z: z)
-        var crossDot = (qv.cross(v)) * w + qv * (qv.dot(v))
+        let qv = Vector3(x: x,y: y,z: z)
+        let crossDot = (qv.cross(v)) * w + qv * (qv.dot(v))
         
         return (v * (w*w - 0.5) - crossDot) * 2.0
     }

@@ -32,23 +32,26 @@ func createImageData(name: String!,inout texInfo: imageStruct) {
         texInfo.bitsPerPixel = CGImageGetBitsPerPixel(image)
         texInfo.hasAlpha = CGImageGetAlphaInfo(image) != .None
         
-        var sizeInBytes = texInfo.width * texInfo.height * texInfo.bitsPerPixel / 8
-        var bytesPerRow = texInfo.width * texInfo.bitsPerPixel / 8
+        let sizeInBytes = texInfo.width * texInfo.height * texInfo.bitsPerPixel / 8
+        let bytesPerRow = texInfo.width * texInfo.bitsPerPixel / 8
         
         texInfo.bitmapData = malloc(Int(sizeInBytes))
         
-        let context : CGContextRef = CGBitmapContextCreate(
+        let context: CGContextRef? = CGBitmapContextCreate(
             texInfo.bitmapData!,
             texInfo.width,
             texInfo.height, 8,
             bytesPerRow,
             CGImageGetColorSpace(image),
-            CGImageGetBitmapInfo(image))
+            CGImageGetBitmapInfo(image).rawValue)
         
-        CGContextDrawImage(
-            context,
-            CGRectMake(0, 0, CGFloat(texInfo.width), CGFloat(texInfo.height)),
-            image)
+        if let context = context {
+        
+            CGContextDrawImage(
+                context,
+                CGRectMake(0, 0, CGFloat(texInfo.width), CGFloat(texInfo.height)),
+                image)
+        }
         
     }
     
@@ -58,8 +61,8 @@ func convertToRGBA(inout texInfo: imageStruct) {
     
     assert(texInfo.bitsPerPixel == 24, "Wrong image format")
     
-    var stride = texInfo.width * 4
-    var newPixels = malloc(stride * texInfo.height)
+    let stride = texInfo.width * 4
+    let newPixels = malloc(stride * texInfo.height)
     
     var dstPixels = UnsafeMutablePointer<UInt32>(newPixels)
     
@@ -70,14 +73,14 @@ func convertToRGBA(inout texInfo: imageStruct) {
     
     a = 255
     
-    var sourceStride = texInfo.width * texInfo.bitsPerPixel / 8
-    var pointer = texInfo.bitmapData!
+    let sourceStride = texInfo.width * texInfo.bitsPerPixel / 8
+    let pointer = texInfo.bitmapData!
     
     for var j : Int = 0; j < texInfo.height; j++
     {
         for var i : Int = 0; i < sourceStride; i+=3 {
             
-            var position : Int = Int(i + (sourceStride * j))
+            let position : Int = Int(i + (sourceStride * j))
             var srcPixel = UnsafeMutablePointer<UInt8>(pointer + position)
             
             r = srcPixel.memory
@@ -92,7 +95,7 @@ func convertToRGBA(inout texInfo: imageStruct) {
         }
     }
     
-    if let bitmapData = texInfo.bitmapData {
+    if let _ = texInfo.bitmapData {
         
         free(texInfo.bitmapData!)
     }
@@ -137,7 +140,7 @@ func makeNormal(x1:Float32, y1:Float32, z1:Float32,
     x3:Float32, y3:Float32, z3:Float32,
     inout rx:Float32, inout ry:Float32, inout rz:Float32 )
 {
-    var ax:Float32 = x3-x1,
+    let ax:Float32 = x3-x1,
     ay:Float32 = y3-y1,
     az:Float32 = z3-z1,
     bx:Float32 = x2-x1,
@@ -149,7 +152,7 @@ func makeNormal(x1:Float32, y1:Float32, z1:Float32,
     rz = ax*by - bx*ay
 }
 
-func createARGBBitmapContext(inImage: CGImage) -> CGContext {
+func createARGBBitmapContext(inImage: CGImage) -> CGContext! {
     
     var bitmapByteCount = 0
     var bitmapBytesPerRow = 0
@@ -162,7 +165,7 @@ func createARGBBitmapContext(inImage: CGImage) -> CGContext {
     
     let colorSpace = CGColorSpaceCreateDeviceRGB()
     let bitmapData = malloc(Int(bitmapByteCount))
-    let bitmapInfo = CGBitmapInfo( UInt32(CGImageAlphaInfo.PremultipliedFirst.rawValue) )
+    let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.PremultipliedFirst.rawValue)
     
     let context = CGBitmapContextCreate(bitmapData,
         pixelsWide,
@@ -170,7 +173,7 @@ func createARGBBitmapContext(inImage: CGImage) -> CGContext {
         Int(8),
         Int(bitmapBytesPerRow),
         colorSpace,
-        bitmapInfo)
+        bitmapInfo.rawValue)
     
     return context
 }

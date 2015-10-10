@@ -43,7 +43,7 @@ struct Vector3 {
     }
 }
 
-extension Vector3: Printable {
+extension Vector3: CustomStringConvertible {
     
     var description: String { return "[\(x),\(y),\(z)]" }
 }
@@ -140,9 +140,9 @@ extension Vector3 : Equatable {
     
     mutating func cross(left: Vector3, right: Vector3) {
     
-        var a = (left.y * right.z) - (left.z * right.y);
-        var b = (left.z * right.x) - (left.x * right.z);
-        var c = (left.x * right.y) - (left.y * right.x);
+        let a = (left.y * right.z) - (left.z * right.y);
+        let b = (left.z * right.x) - (left.x * right.z);
+        let c = (left.x * right.y) - (left.y * right.x);
         
         x = a;
         y = b;

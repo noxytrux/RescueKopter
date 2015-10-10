@@ -9,28 +9,26 @@
 import UIKit
 import Metal
 
-class KPTModelManager: KPTSingletonProtocol {
+class KPTModelManager {
    
+    static let sharedInstance = KPTModelManager()
+    
     private var modelsCache = [String: KPTModel]()
     
     required init() {
         
     }
     
-    class func className() -> String {
-        return "KPTModelManager"
-    }
-    
     func loadModel(name: String!, device: MTLDevice!) -> KPTModel? {
         
-        var model = modelsCache[name]
+        let model = modelsCache[name]
         
         if let model = model {
             
             return model
         }
         
-        var loadedModel = KPTModel()
+        let loadedModel = KPTModel()
         
         let info = loadedModel.load(name, device: device)
         

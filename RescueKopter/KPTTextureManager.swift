@@ -9,7 +9,9 @@
 import UIKit
 import Metal
 
-class KPTTextureManager: KPTSingletonProtocol {
+class KPTTextureManager  {
+    
+    static let sharedInstance = KPTTextureManager()
     
     private var textureCache = [String: MTLTexture]()
     
@@ -17,13 +19,9 @@ class KPTTextureManager: KPTSingletonProtocol {
         
     }
     
-    class func className() -> String {
-        return "KPTTextureManager"
-    }
-    
     func loadTexture(name: String!, device: MTLDevice!) -> MTLTexture? {
         
-        var texture = textureCache[name]
+        let texture = textureCache[name]
         
         if let texture = texture {
             
@@ -32,21 +30,21 @@ class KPTTextureManager: KPTSingletonProtocol {
         
         var texStruct = imageStruct()
         
-        createImageData(name, &texStruct)
+        createImageData(name, texInfo: &texStruct)
         
-        if let bitmapData = texStruct.bitmapData {
+        if let _ = texStruct.bitmapData {
             
             if texStruct.hasAlpha == false && texStruct.bitsPerPixel >= 24 {
                 
                 convertToRGBA(&texStruct)
             }
             
-            var descriptor = MTLTextureDescriptor.texture2DDescriptorWithPixelFormat(.RGBA8Unorm,
+            let descriptor = MTLTextureDescriptor.texture2DDescriptorWithPixelFormat(.RGBA8Unorm,
                 width: Int(texStruct.width),
                 height: Int(texStruct.height),
                 mipmapped: true)
             
-            var loadedTexture = device.newTextureWithDescriptor(descriptor)
+            let loadedTexture = device.newTextureWithDescriptor(descriptor)
             
             loadedTexture.replaceRegion(
                 MTLRegionMake2D(0, 0, Int(texStruct.width),Int(texStruct.height)),
@@ -66,7 +64,7 @@ class KPTTextureManager: KPTSingletonProtocol {
     
     func loadCubeTexture(name: String!, device: MTLDevice!) -> MTLTexture? {
         
-        var texture = textureCache[name]
+        let texture = textureCache[name]
         
         if let texture = texture {
             
@@ -75,22 +73,22 @@ class KPTTextureManager: KPTSingletonProtocol {
         
         var texStruct = imageStruct()
         
-        createImageData(name, &texStruct)
+        createImageData(name, texInfo: &texStruct)
         
-        if let bitmapData = texStruct.bitmapData {
+        if let _ = texStruct.bitmapData {
             
             if texStruct.hasAlpha == false && texStruct.bitsPerPixel >= 24 {
                 
                 convertToRGBA(&texStruct)
             }
             
-            var bytesPerImage = Int(texStruct.width * texStruct.width * 4)
+            let bytesPerImage = Int(texStruct.width * texStruct.width * 4)
             
-            var descriptor = MTLTextureDescriptor.textureCubeDescriptorWithPixelFormat(.RGBA8Unorm,
+            let descriptor = MTLTextureDescriptor.textureCubeDescriptorWithPixelFormat(.RGBA8Unorm,
                 size: Int(texStruct.width),
                 mipmapped: false)
             
-            var loadedTexture = device.newTextureWithDescriptor(descriptor)
+            let loadedTexture = device.newTextureWithDescriptor(descriptor)
             
             for index in 0...5 {
                 

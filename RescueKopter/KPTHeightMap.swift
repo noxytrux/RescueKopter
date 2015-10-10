@@ -17,7 +17,7 @@ class KPTHeightMap {
     
     init(filename: String) {
     
-        var mapData = loadMapData(filename)
+        let mapData = loadMapData(filename)
         
         w = Int(mapData.width)
         h = Int(mapData.height)
@@ -27,12 +27,12 @@ class KPTHeightMap {
         
         var index:Int = 0
         
-        var dataStruct = UnsafePointer<mapDataStruct>(mapData.data)
+        let dataStruct = UnsafePointer<mapDataStruct>(mapData.data)
         
         for var ax=0; ax < w; ax++ {
             for var ay=0; ay < h; ay++ {
                 
-                var imgData = dataStruct[ax + ay * w]
+                let imgData = dataStruct[ax + ay * w]
                 data[index] = Float32(imgData.ground)
                 index++
             }
@@ -61,27 +61,27 @@ class KPTHeightMap {
                 cx = Float32(x) * 2.0
                 cy = Float32(y) * 2.0
                 
-                makeNormal( cx, At(x,y:y),cy ,cx+2, At(x+1,y:y-1),cy-2, cx+2,At(x+1,y:y),cy, &ax, &ay, &az )
+                makeNormal( cx, y1: At(x,y:y),z1: cy ,x2: cx+2, y2: At(x+1,y:y-1),z2: cy-2, x3: cx+2,y3: At(x+1,y:y),z3: cy, rx: &ax, ry: &ay, rz: &az )
                 sx += ax
                 sy += ay
                 sz += az
                 
-                makeNormal( cx, At(x,y:y),cy ,cx+2, At(x+1,y:y),cy,cx, At(x,y:y+1),cy+2, &ax, &ay, &az )
+                makeNormal( cx, y1: At(x,y:y),z1: cy ,x2: cx+2, y2: At(x+1,y:y),z2: cy,x3: cx, y3: At(x,y:y+1),z3: cy+2, rx: &ax, ry: &ay, rz: &az )
                 sx += ax
                 sy += ay
                 sz += az
                 
-                makeNormal( cx, At(x,y:y),cy ,cx ,At(x,y:y+1),cy+2, cx-2,At(x-1,y:y+1),cy+2, &ax, &ay, &az )
+                makeNormal( cx, y1: At(x,y:y),z1: cy ,x2: cx ,y2: At(x,y:y+1),z2: cy+2, x3: cx-2,y3: At(x-1,y:y+1),z3: cy+2, rx: &ax, ry: &ay, rz: &az )
                 sx += ax
                 sy += ay
                 sz += az
                 
-                makeNormal( cx, At(x,y:y),cy ,cx-2 ,At(x-1,y:y+1),cy+2, cx-2,At(x-1,y:y),cy, &ax, &ay, &az )
+                makeNormal( cx, y1: At(x,y:y),z1: cy ,x2: cx-2 ,y2: At(x-1,y:y+1),z2: cy+2, x3: cx-2,y3: At(x-1,y:y),z3: cy, rx: &ax, ry: &ay, rz: &az )
                 sx += ax
                 sy += ay
                 sz += az
                 
-                makeNormal( cx, At(x,y:y),cy ,cx-2 ,At(x-1,y:y),cy, cx,At(x,y:y-1),cy-2, &ax, &ay, &az )
+                makeNormal( cx, y1: At(x,y:y),z1: cy ,x2: cx-2 ,y2: At(x-1,y:y),z2: cy, x3: cx,y3: At(x,y:y-1),z3: cy-2, rx: &ax, ry: &ay, rz: &az )
                 sx += ax
                 sy += ay
                 sz += az
@@ -94,9 +94,9 @@ class KPTHeightMap {
     
     func updateNormal(x:Int,y:Int, nx:Float32, ny:Float32, nz:Float32) {
     
-        var index: Int = ( x + y * w ) * 3
+        let index: Int = ( x + y * w ) * 3
     
-        var l:Float32 = sqrt(nx*nx + ny*ny + nz*nz)
+        let l:Float32 = sqrt(nx*nx + ny*ny + nz*nz)
         
         if l > 0.0001 {
             
@@ -119,7 +119,7 @@ class KPTHeightMap {
             return 0
         }
         
-        var vertexIndex: Int = x + y * w
+        let vertexIndex: Int = x + y * w
         
         return data[vertexIndex]
     }
@@ -135,16 +135,16 @@ class KPTHeightMap {
             ry = 0
         }
         
-        var index: Int = ( rx + ry * w ) * 3 + d
+        let index: Int = ( rx + ry * w ) * 3 + d
         
         return normal[index]
     }
     
     func normalVectorAt(x:Int,y:Int) -> Vector3 {
     
-        var nx = normAt(x, y: y, d: 0)
-        var ny = normAt(x, y: y, d: 1)
-        var nz = normAt(x, y: y, d: 2)
+        let nx = normAt(x, y: y, d: 0)
+        let ny = normAt(x, y: y, d: 1)
+        let nz = normAt(x, y: y, d: 2)
         
         return Vector3(x:nx, y:ny, z:nz)
     }
@@ -154,8 +154,8 @@ class KPTHeightMap {
         var rx = x
         var rz = z
         
-        var a: Int = Int(x)
-        var b: Int = Int(z)
+        let a: Int = Int(x)
+        let b: Int = Int(z)
         
         if a < 0 || b < 0 || a > w-1 || b > h-1 {
             
@@ -167,19 +167,19 @@ class KPTHeightMap {
         
         if( rz < 0.001 ) {
             
-            return mix( At(a,y:b) ,At(a+1,y:b) , rx )
+            return mix( At(a,y:b) ,b: At(a+1,y:b) , f: rx )
         }
         
         if( rx < 0.001 ) {
         
-            return mix( At(a,y:b) ,At(a,y:b+1) , rz )
+            return mix( At(a,y:b) ,b: At(a,y:b+1) , f: rz )
         }
         
         if( rx < rz )
         {
             
-            var w1 = rz*( At(a,y:b+1) - At(a,y:b) ) + At(a,y:b)
-            var w2 = rz*( At(a+1,y:b+1) - At(a,y:b) ) + At(a,y:b)
+            let w1 = rz*( At(a,y:b+1) - At(a,y:b) ) + At(a,y:b)
+            let w2 = rz*( At(a+1,y:b+1) - At(a,y:b) ) + At(a,y:b)
             
             return w1 + rx/rz*( w2 - w1 )
             
@@ -187,8 +187,8 @@ class KPTHeightMap {
         else
         {
             
-            var w1 = rx*( At(a+1,y:b) - At(a,y:b) ) + At(a,y:b)
-            var w2 = rx*( At(a+1,y:b+1) - At(a,y:b) ) + At(a,y:b)
+            let w1 = rx*( At(a+1,y:b) - At(a,y:b) ) + At(a,y:b)
+            let w2 = rx*( At(a+1,y:b+1) - At(a,y:b) ) + At(a,y:b)
             
             return w1 + rz/rx*( w2 - w1 )
         }
@@ -197,8 +197,8 @@ class KPTHeightMap {
     
     func GetNormal(x:Float32, z:Float32) -> Vector3 {
     
-        var a = Int(x)
-        var b = Int(z)
+        let a = Int(x)
+        let b = Int(z)
         var v = Vector3(x:0.0, y:1.0, z:0.0)
         
         if( a < 0 || b < 0 || a > w-1 || b > h-1 ) {

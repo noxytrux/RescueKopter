@@ -15,11 +15,11 @@ class KPTMapModel: KPTModel {
     override func load(name: String, device: MTLDevice) -> (loaded: Bool, error: NSError?) {
     
         var matrixData = matrixStructure()
-        matrixBuffer = device.newBufferWithBytes(&matrixData, length: sizeof(matrixStructure), options: nil)
+        matrixBuffer = device.newBufferWithBytes(&matrixData, length: sizeof(matrixStructure), options: .CPUCacheModeDefaultCache)
         modelName = name
         
-        var error:NSError? = nil
-        var status: Bool = true
+        let error:NSError? = nil
+        let status: Bool = true
         
         //create current mesh Structure
         var subMeshBuffer = KPTMeshData()
@@ -27,13 +27,13 @@ class KPTMapModel: KPTModel {
         let texName = "grass"
         
         //load texture
-        subMeshBuffer.diffuseTex = KPTSingletonFactory<KPTTextureManager>.sharedInstance().loadTexture(texName, device: device)
+        subMeshBuffer.diffuseTex = KPTTextureManager.sharedInstance.loadTexture(texName, device: device)
         
         if subMeshBuffer.diffuseTex == nil {
             
-            subMeshBuffer.diffuseTex = KPTSingletonFactory<KPTTextureManager>.sharedInstance().loadTexture("checker", device: device)
+            subMeshBuffer.diffuseTex = KPTTextureManager.sharedInstance.loadTexture("checker", device: device)
             
-            println("Warning no texture found for: \(texName)")
+            print("Warning no texture found for: \(texName)")
         }
         
         //generate height map
@@ -41,7 +41,7 @@ class KPTMapModel: KPTModel {
         subMeshBuffer.vertexCount = UInt32(heightMap.w * heightMap.h)
        
         var vertexData = [geometryInfo]()
-        var width:Float32 = Float32(heightMap.w)
+        let width:Float32 = Float32(heightMap.w)
         
         for(var x:Int = 0; x<heightMap.w; x++) {
         
@@ -57,7 +57,7 @@ class KPTMapModel: KPTModel {
             }
         }
         
-        var size:Int = heightMap.w
+        let size:Int = heightMap.w
         
         subMeshBuffer.faceCount = UInt32((size-1) * (size-1)) * 6
         
@@ -79,8 +79,8 @@ class KPTMapModel: KPTModel {
       
         subMeshBuffer.pipelineState = "basic"
         
-        subMeshBuffer.vertexBuffer = device.newBufferWithBytes(vertexData, length:Int(subMeshBuffer.vertexCount) * sizeof(geometryInfo), options:nil)
-        subMeshBuffer.indexBuffer = device.newBufferWithBytes(faceData, length:Int(subMeshBuffer.faceCount) * sizeof(UInt16), options: nil)
+        subMeshBuffer.vertexBuffer = device.newBufferWithBytes(vertexData, length:Int(subMeshBuffer.vertexCount) * sizeof(geometryInfo), options: .CPUCacheModeDefaultCache)
+        subMeshBuffer.indexBuffer = device.newBufferWithBytes(faceData, length:Int(subMeshBuffer.faceCount) * sizeof(UInt16), options: .CPUCacheModeDefaultCache)
         
         subMeshData.append(subMeshBuffer)
         

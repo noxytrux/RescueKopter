@@ -63,15 +63,15 @@ struct Matrix33 {
     }
 }
 
-extension Matrix33: Printable {
+extension Matrix33: CustomStringConvertible {
     
     //dispaly in column major (OpenGL like)
 
     var description: String {
         
-        var row0 = "\(m[0][0]),\(m[1][0]),\(m[2][0])"
-        var row1 = "\(m[0][1]),\(m[1][1]),\(m[2][1])"
-        var row2 = "\(m[0][2]),\(m[1][2]),\(m[2][2])"
+        let row0 = "\(m[0][0]),\(m[1][0]),\(m[2][0])"
+        let row1 = "\(m[0][1]),\(m[1][1]),\(m[2][1])"
+        let row2 = "\(m[0][2]),\(m[1][2]),\(m[2][2])"
         
         return "[\(row0),\n\(row1),\n\(row2)]"
     }
@@ -307,9 +307,9 @@ extension Matrix33 {
     
     mutating func setTransposed() {
     
-        swapValues(&self[0,1], &self[1,0])
-        swapValues(&self[1,2], &self[2,1])
-        swapValues(&self[0,2], &self[2,0])
+        swapValues(&self[0,1], b: &self[1,0])
+        swapValues(&self[1,2], b: &self[2,1])
+        swapValues(&self[0,2], b: &self[2,0])
     }
     
     mutating func multiplyDiagonal(v: Vector3) {
@@ -484,8 +484,8 @@ extension Matrix33 {
     
     mutating func rotX(angle: Float32) {
     
-        var Cos: Float32 = cosf(angle)
-        var Sin: Float32 = sinf(angle)
+        let Cos: Float32 = cosf(angle)
+        let Sin: Float32 = sinf(angle)
         
         identity()
         
@@ -497,8 +497,8 @@ extension Matrix33 {
     
     mutating func rotY(angle: Float32) {
         
-        var Cos: Float32 = cosf(angle)
-        var Sin: Float32 = sinf(angle)
+        let Cos: Float32 = cosf(angle)
+        let Sin: Float32 = sinf(angle)
         
         identity()
         
@@ -510,8 +510,8 @@ extension Matrix33 {
     
     mutating func rotZ(angle: Float32) {
         
-        var Cos: Float32 = cosf(angle)
-        var Sin: Float32 = sinf(angle)
+        let Cos: Float32 = cosf(angle)
+        let Sin: Float32 = sinf(angle)
         
         identity()
         
@@ -523,12 +523,12 @@ extension Matrix33 {
     
     func determinant() -> Float32 {
      
-        var a = m[0][0] * m[1][1] * m[2][2]
-        var b = m[0][1] * m[1][2] * m[2][1]
-        var c = m[0][2] * m[1][0] * m[2][1]
-        var d = m[0][2] * m[1][1] * m[2][0]
-        var e = m[0][1] * m[1][0] * m[2][2]
-        var f = m[0][0] * m[1][2] * m[2][1]
+        let a = m[0][0] * m[1][1] * m[2][2]
+        let b = m[0][1] * m[1][2] * m[2][1]
+        let c = m[0][2] * m[1][0] * m[2][1]
+        let d = m[0][2] * m[1][1] * m[2][0]
+        let e = m[0][1] * m[1][0] * m[2][2]
+        let f = m[0][0] * m[1][2] * m[2][1]
         
         return a + b + c - d - e - f
     }

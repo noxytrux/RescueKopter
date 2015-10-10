@@ -59,29 +59,29 @@ struct Matrix3x3 {
     var m09:Float32 = 1
 }
 
-extension Matrix3x3: Printable {
+extension Matrix3x3: CustomStringConvertible {
     
     //dispaly in column major (OpenGL like)
     
     var description: String {
         
-        var row0 = "\(m01),\(m04),\(m07)"
-        var row1 = "\(m02),\(m05),\(m08)"
-        var row2 = "\(m03),\(m06),\(m09)"
+        let row0 = "\(m01),\(m04),\(m07)"
+        let row1 = "\(m02),\(m05),\(m08)"
+        let row2 = "\(m03),\(m06),\(m09)"
         
         return "[\(row0),\n\(row1),\n\(row2)]"
     }
 }
 
-extension Matrix4x4: Printable {
+extension Matrix4x4: CustomStringConvertible {
     
     //dispaly in column major (OpenGL like)
     var description: String {
         
-        var row0 = "\(m01),\(m05),\(m09),\(m13)"
-        var row1 = "\(m02),\(m06),\(m10),\(m14)"
-        var row2 = "\(m03),\(m07),\(m11),\(m15)"
-        var row3 = "\(m04),\(m08),\(m12),\(m16)"
+        let row0 = "\(m01),\(m05),\(m09),\(m13)"
+        let row1 = "\(m02),\(m06),\(m10),\(m14)"
+        let row2 = "\(m03),\(m07),\(m11),\(m15)"
+        let row3 = "\(m04),\(m08),\(m12),\(m16)"
         
         return "[\(row0),\n\(row1),\n\(row2),\n\(row3)]"
     }
@@ -123,16 +123,16 @@ func copyMatrix33(src: [Float32], inout dst: Matrix3x3) {
 
 func matrix44MakePerspective(fovyRadians: Float32, aspect: Float32, nearZ: Float32, farZ: Float32) -> Matrix4x4 {
 
-    var cotan: Float32 = 1.0 / tanf(fovyRadians / 2.0);
+    let cotan: Float32 = 1.0 / tanf(fovyRadians / 2.0);
     
-    var m = [ cotan / aspect, 0.0, 0.0, 0.0,
+    let m = [ cotan / aspect, 0.0, 0.0, 0.0,
               0.0, cotan, 0.0, 0.0,
               0.0, 0.0, (farZ + nearZ) / (nearZ - farZ), -1.0,
               0.0, 0.0, (2.0 * farZ * nearZ) / (nearZ - farZ), 0.0]
     
     //TODO: make it direct assing lazy bastard
     var outMat = Matrix4x4()
-    copyMatrix44(m, &outMat)
+    copyMatrix44(m, dst: &outMat)
     
     return outMat
 }
@@ -154,14 +154,14 @@ func matrix44MakeFrustum(left: Float32, right: Float32, bottom: Float32, top: Fl
     let e = -fan / fsn
     let f = (-2.0 * farZ * nearZ) / fsn
     
-    var m = [ a, 0.0, 0.0, 0.0,
+    let m = [ a, 0.0, 0.0, 0.0,
               0.0, b, 0.0, 0.0,
                c,  d,  e, -1.0,
               0.0, 0.0, f, 0.0]
     
     //TODO: make it direct assing lazy bastard
     var outMat = Matrix4x4()
-    copyMatrix44(m, &outMat)
+    copyMatrix44(m, dst: &outMat)
     
     return outMat
 }
@@ -175,23 +175,23 @@ func matrix44MakeOrtho(left: Float32, right: Float32, bottom: Float32, top: Floa
     let fan = farZ + nearZ;
     let fsn = farZ - nearZ;
     
-    var m = [ 2.0 / rsl, 0.0, 0.0, 0.0,
+    let m = [ 2.0 / rsl, 0.0, 0.0, 0.0,
               0.0, 2.0 / tsb, 0.0, 0.0,
               0.0, 0.0, -2.0 / fsn, 0.0,
               -ral / rsl, -tab / tsb, -fan / fsn, 1.0]
     
     //TODO: make it direct assing lazy bastard
     var outMat = Matrix4x4()
-    copyMatrix44(m, &outMat)
+    copyMatrix44(m, dst: &outMat)
     
     return outMat
 }
 
 func matrix44MakeLookAt(eye: Vector3, center: Vector3, up: Vector3) -> Matrix4x4{
  
-    var ev = Vector3(other: eye)
+    let ev = Vector3(other: eye)
     var cv = Vector3(other: center)
-    var uv = Vector3(other: up)
+    let uv = Vector3(other: up)
     
     cv.setNegative()
     
@@ -201,7 +201,7 @@ func matrix44MakeLookAt(eye: Vector3, center: Vector3, up: Vector3) -> Matrix4x4
     var u: Vector3 = uv.cross(n)
         u.normalize()
     
-    var v: Vector3 = n.cross(u)
+    let v: Vector3 = n.cross(u)
 
     var un = Vector3(other: u)
     var vn = Vector3(other: v)
@@ -211,14 +211,14 @@ func matrix44MakeLookAt(eye: Vector3, center: Vector3, up: Vector3) -> Matrix4x4
     vn.setNegative()
     nn.setNegative()
     
-    var m = [u.x, v.x, n.x, 0.0,
+    let m = [u.x, v.x, n.x, 0.0,
              u.y, v.y, n.y, 0.0,
              u.z, v.z, n.z, 0.0,
              un.dot(ev), vn.dot(ev), nn.dot(ev), 1.0]
     
     //TODO: make it direct assing lazy bastard
     var outMat = Matrix4x4()
-    copyMatrix44(m, &outMat)
+    copyMatrix44(m, dst: &outMat)
     
     return outMat
 }

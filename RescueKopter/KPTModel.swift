@@ -73,7 +73,7 @@ class KPTModel {
         
         //generate unique buffer for model
         var matrixData = matrixStructure()
-        matrixBuffer = device.newBufferWithBytes(&matrixData, length: sizeof(matrixStructure), options: nil)
+        matrixBuffer = device.newBufferWithBytes(&matrixData, length: sizeof(matrixStructure), options: .CPUCacheModeDefaultCache)
         
         
         modelName = name
@@ -81,7 +81,7 @@ class KPTModel {
         var error:NSError? = nil
         var status: Bool = true
         
-        var path = NSBundle.mainBundle().pathForResource(name, ofType: "gmf")
+        let path = NSBundle.mainBundle().pathForResource(name, ofType: "gmf")
         
         if let path = path {
             
@@ -91,7 +91,7 @@ class KPTModel {
             var c:CChar = 0
             var namestr = Array<CChar>(count: 256, repeatedValue: 0)
             
-            var readStream:NSFileHandle? = NSFileHandle(forReadingAtPath: path)
+            let readStream:NSFileHandle? = NSFileHandle(forReadingAtPath: path)
             
             if let readStream = readStream {
                 
@@ -112,7 +112,7 @@ class KPTModel {
                         
                         index = 0;
                         
-                        do
+                        repeat
                         {
                             data = readStream.readDataOfLength(sizeof(CChar))
                             data.getBytes(&c, length: sizeof(CChar))
@@ -124,21 +124,21 @@ class KPTModel {
                         
                         namestr[255] = 0
                         
-                        var texName = String.fromCString(namestr)!
+                        let texName = String.fromCString(namestr)!
                         
-                        println("Mesh: \(texName)")
+                        print("Mesh: \(texName)")
                         
                         //create current mesh Structure
                         var subMeshBuffer = KPTMeshData()
                         
                         //load texture
-                        subMeshBuffer.diffuseTex = KPTSingletonFactory<KPTTextureManager>.sharedInstance().loadTexture(texName, device: device)
+                        subMeshBuffer.diffuseTex = KPTTextureManager.sharedInstance.loadTexture(texName, device: device)
                         
                         if subMeshBuffer.diffuseTex == nil {
                             
-                            subMeshBuffer.diffuseTex = KPTSingletonFactory<KPTTextureManager>.sharedInstance().loadTexture("checker", device: device)
+                            subMeshBuffer.diffuseTex = KPTTextureManager.sharedInstance.loadTexture("checker", device: device)
                             
-                            println("Warning no texture found for: \(texName)")
+                            print("Warning no texture found for: \(texName)")
                         }
                         
                         data = readStream.readDataOfLength(sizeof(UInt32))
@@ -198,8 +198,8 @@ class KPTModel {
                         
                         subMeshBuffer.pipelineState = "basic" //you may want to load this from some material file
                         
-                        subMeshBuffer.vertexBuffer = device.newBufferWithBytes(vertexData, length:Int(subMeshBuffer.vertexCount) * sizeof(geometryInfo), options:nil)
-                        subMeshBuffer.indexBuffer = device.newBufferWithBytes(faceData, length:Int(subMeshBuffer.faceCount) * sizeof(UInt16), options: nil)
+                        subMeshBuffer.vertexBuffer = device.newBufferWithBytes(vertexData, length:Int(subMeshBuffer.vertexCount) * sizeof(geometryInfo), options: .CPUCacheModeDefaultCache)
+                        subMeshBuffer.indexBuffer = device.newBufferWithBytes(faceData, length:Int(subMeshBuffer.faceCount) * sizeof(UInt16), options: .CPUCacheModeDefaultCache)
                         
                         //store geometry info
                         subMeshData.append(subMeshBuffer)
@@ -230,7 +230,7 @@ class KPTModel {
         
         for subMesh in subMeshData {
             
-            var pipelineState = states[subMesh.pipelineState!]
+            let pipelineState = states[subMesh.pipelineState!]
             
             if let pipelineState = pipelineState {
                 

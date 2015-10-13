@@ -9,6 +9,35 @@
 /* Begin PBXBuildFile section */
 		042F17EA1A1792EA00614DB3 /* KPTMapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042F17E91A1792EA00614DB3 /* KPTMapModel.swift */; };
 		042F17EC1A17B85D00614DB3 /* helicopter.gmf in Resources */ = {isa = PBXBuildFile; fileRef = 042F17EB1A17B73C00614DB3 /* helicopter.gmf */; };
+		048CF9711BCD11300041ADCE /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 048CF9701BCD11300041ADCE /* GameController.framework */; };
+		04E97C971BC99B3F004EDB3F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E97C961BC99B3F004EDB3F /* AppDelegate.swift */; };
+		04E97C9E1BC99B3F004EDB3F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04E97C9C1BC99B3F004EDB3F /* Main.storyboard */; };
+		04E97CA01BC99B3F004EDB3F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04E97C9F1BC99B3F004EDB3F /* Assets.xcassets */; };
+		04E97CA51BC99C15004EDB3F /* KPTGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D97E1A175E630042A158 /* KPTGameViewController.swift */; };
+		04E97CA61BC99EF5004EDB3F /* KPTMapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 042F17E91A1792EA00614DB3 /* KPTMapModel.swift */; };
+		04E97CA71BC99F4B004EDB3F /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9801A175E630042A158 /* Shaders.metal */; };
+		04E97CA81BC99F50004EDB3F /* Skybox.metal in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9D11A1771460042A158 /* Skybox.metal */; };
+		04E97CA91BC99F55004EDB3F /* KPTTextureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9B31A1765060042A158 /* KPTTextureManager.swift */; };
+		04E97CAA1BC99F58004EDB3F /* KPTModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9B51A1765830042A158 /* KPTModelManager.swift */; };
+		04E97CAB1BC99F5B004EDB3F /* KPTModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9B71A17662E0042A158 /* KPTModel.swift */; };
+		04E97CAC1BC99F5D004EDB3F /* KPTHeightMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9D91A177C680042A158 /* KPTHeightMap.swift */; };
+		04E97CAD1BC99F68004EDB3F /* helicopter.gmf in Resources */ = {isa = PBXBuildFile; fileRef = 042F17EB1A17B73C00614DB3 /* helicopter.gmf */; };
+		04E97CAE1BC99F6B004EDB3F /* grass.png in Resources */ = {isa = PBXBuildFile; fileRef = 04F8D9D51A177AB00042A158 /* grass.png */; };
+		04E97CAF1BC99F6D004EDB3F /* heightmap.png in Resources */ = {isa = PBXBuildFile; fileRef = 04F8D9D61A177AB00042A158 /* heightmap.png */; };
+		04E97CB01BC99F70004EDB3F /* skybox.png in Resources */ = {isa = PBXBuildFile; fileRef = 04F8D9D31A1776590042A158 /* skybox.png */; };
+		04E97CB11BC99F73004EDB3F /* checker.png in Resources */ = {isa = PBXBuildFile; fileRef = 04F8D9BA1A1769B10042A158 /* checker.png */; };
+		04E97CB21BC99F76004EDB3F /* Mesh1_surf.png in Resources */ = {isa = PBXBuildFile; fileRef = 04F8D9BB1A1769B10042A158 /* Mesh1_surf.png */; };
+		04E97CB31BC99F79004EDB3F /* Object01.png in Resources */ = {isa = PBXBuildFile; fileRef = 04F8D9BC1A1769B10042A158 /* Object01.png */; };
+		04E97CB41BC99F7C004EDB3F /* palmnew.gmf in Resources */ = {isa = PBXBuildFile; fileRef = 04F8D9BD1A1769B10042A158 /* palmnew.gmf */; };
+		04E97CB51BC99F7E004EDB3F /* sphere.gmf in Resources */ = {isa = PBXBuildFile; fileRef = 04F8D9C51A1769B10042A158 /* sphere.gmf */; };
+		04E97CB61BC99F84004EDB3F /* Generic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9AC1A1762360042A158 /* Generic.swift */; };
+		04E97CB71BC99F87004EDB3F /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9AE1A1762960042A158 /* Utilities.swift */; };
+		04E97CB81BC99F8D004EDB3F /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D99F1A1761710042A158 /* Math.swift */; };
+		04E97CB91BC99F8F004EDB3F /* Matrix33.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9A01A1761710042A158 /* Matrix33.swift */; };
+		04E97CBA1BC99F92004EDB3F /* Matrix34.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9A11A1761710042A158 /* Matrix34.swift */; };
+		04E97CBB1BC99F95004EDB3F /* Quaternion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9A21A1761710042A158 /* Quaternion.swift */; };
+		04E97CBC1BC99F97004EDB3F /* Vector2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9A31A1761710042A158 /* Vector2.swift */; };
+		04E97CBD1BC99F9A004EDB3F /* Vector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9A41A1761710042A158 /* Vector3.swift */; };
 		04F8D97D1A175E630042A158 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D97C1A175E630042A158 /* AppDelegate.swift */; };
 		04F8D97F1A175E630042A158 /* KPTGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D97E1A175E630042A158 /* KPTGameViewController.swift */; };
 		04F8D9811A175E630042A158 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 04F8D9801A175E630042A158 /* Shaders.metal */; };
@@ -52,6 +81,12 @@
 /* Begin PBXFileReference section */
 		042F17E91A1792EA00614DB3 /* KPTMapModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KPTMapModel.swift; sourceTree = "<group>"; };
 		042F17EB1A17B73C00614DB3 /* helicopter.gmf */ = {isa = PBXFileReference; lastKnownFileType = file; path = helicopter.gmf; sourceTree = "<group>"; };
+		048CF9701BCD11300041ADCE /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS9.0.sdk/System/Library/Frameworks/GameController.framework; sourceTree = DEVELOPER_DIR; };
+		04E97C941BC99B3F004EDB3F /* RescueKopterTV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RescueKopterTV.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		04E97C961BC99B3F004EDB3F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		04E97C9D1BC99B3F004EDB3F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		04E97C9F1BC99B3F004EDB3F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		04E97CA11BC99B3F004EDB3F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04F8D9771A175E630042A158 /* RescueKopter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RescueKopter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04F8D97B1A175E630042A158 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04F8D97C1A175E630042A158 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -88,6 +123,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		04E97C911BC99B3F004EDB3F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				048CF9711BCD11300041ADCE /* GameController.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		04F8D9741A175E630042A158 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -105,11 +148,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		04E97C951BC99B3F004EDB3F /* RescueKopterTV */ = {
+			isa = PBXGroup;
+			children = (
+				04E97C961BC99B3F004EDB3F /* AppDelegate.swift */,
+				04E97C9C1BC99B3F004EDB3F /* Main.storyboard */,
+				04E97C9F1BC99B3F004EDB3F /* Assets.xcassets */,
+				04E97CA11BC99B3F004EDB3F /* Info.plist */,
+			);
+			path = RescueKopterTV;
+			sourceTree = "<group>";
+		};
 		04F8D96E1A175E630042A158 = {
 			isa = PBXGroup;
 			children = (
+				048CF9701BCD11300041ADCE /* GameController.framework */,
 				04F8D9791A175E630042A158 /* RescueKopter */,
 				04F8D9911A175E630042A158 /* RescueKopterTests */,
+				04E97C951BC99B3F004EDB3F /* RescueKopterTV */,
 				04F8D9781A175E630042A158 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -119,6 +175,7 @@
 			children = (
 				04F8D9771A175E630042A158 /* RescueKopter.app */,
 				04F8D98E1A175E630042A158 /* RescueKopterTests.xctest */,
+				04E97C941BC99B3F004EDB3F /* RescueKopterTV.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -229,6 +286,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		04E97C931BC99B3F004EDB3F /* RescueKopterTV */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 04E97CA41BC99B3F004EDB3F /* Build configuration list for PBXNativeTarget "RescueKopterTV" */;
+			buildPhases = (
+				04E97C901BC99B3F004EDB3F /* Sources */,
+				04E97C911BC99B3F004EDB3F /* Frameworks */,
+				04E97C921BC99B3F004EDB3F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RescueKopterTV;
+			productName = RescueKopterTV;
+			productReference = 04E97C941BC99B3F004EDB3F /* RescueKopterTV.app */;
+			productType = "com.apple.product-type.application";
+		};
 		04F8D9761A175E630042A158 /* RescueKopter */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 04F8D9981A175E630042A158 /* Build configuration list for PBXNativeTarget "RescueKopter" */;
@@ -271,10 +345,19 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftMigration = 0700;
-				LastSwiftUpdateCheck = 0700;
+				LastSwiftUpdateCheck = 0710;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Marcin Pedzimaz";
 				TargetAttributes = {
+					04E97C931BC99B3F004EDB3F = {
+						CreatedOnToolsVersion = 7.1;
+						DevelopmentTeam = 5TSZE6ES9Y;
+						SystemCapabilities = {
+							com.apple.GameControllers.appletvos = {
+								enabled = 1;
+							};
+						};
+					};
 					04F8D9761A175E630042A158 = {
 						CreatedOnToolsVersion = 6.1.1;
 						DevelopmentTeam = 5TSZE6ES9Y;
@@ -300,11 +383,30 @@
 			targets = (
 				04F8D9761A175E630042A158 /* RescueKopter */,
 				04F8D98D1A175E630042A158 /* RescueKopterTests */,
+				04E97C931BC99B3F004EDB3F /* RescueKopterTV */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		04E97C921BC99B3F004EDB3F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04E97CAE1BC99F6B004EDB3F /* grass.png in Resources */,
+				04E97CAD1BC99F68004EDB3F /* helicopter.gmf in Resources */,
+				04E97CAF1BC99F6D004EDB3F /* heightmap.png in Resources */,
+				04E97CA01BC99B3F004EDB3F /* Assets.xcassets in Resources */,
+				04E97CB11BC99F73004EDB3F /* checker.png in Resources */,
+				04E97CB41BC99F7C004EDB3F /* palmnew.gmf in Resources */,
+				04E97CB31BC99F79004EDB3F /* Object01.png in Resources */,
+				04E97C9E1BC99B3F004EDB3F /* Main.storyboard in Resources */,
+				04E97CB51BC99F7E004EDB3F /* sphere.gmf in Resources */,
+				04E97CB21BC99F76004EDB3F /* Mesh1_surf.png in Resources */,
+				04E97CB01BC99F70004EDB3F /* skybox.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		04F8D9751A175E630042A158 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -334,6 +436,30 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		04E97C901BC99B3F004EDB3F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04E97CBB1BC99F95004EDB3F /* Quaternion.swift in Sources */,
+				04E97CA81BC99F50004EDB3F /* Skybox.metal in Sources */,
+				04E97CAB1BC99F5B004EDB3F /* KPTModel.swift in Sources */,
+				04E97CB91BC99F8F004EDB3F /* Matrix33.swift in Sources */,
+				04E97CB71BC99F87004EDB3F /* Utilities.swift in Sources */,
+				04E97CA91BC99F55004EDB3F /* KPTTextureManager.swift in Sources */,
+				04E97CA71BC99F4B004EDB3F /* Shaders.metal in Sources */,
+				04E97CAC1BC99F5D004EDB3F /* KPTHeightMap.swift in Sources */,
+				04E97CBA1BC99F92004EDB3F /* Matrix34.swift in Sources */,
+				04E97CBD1BC99F9A004EDB3F /* Vector3.swift in Sources */,
+				04E97CB61BC99F84004EDB3F /* Generic.swift in Sources */,
+				04E97CA61BC99EF5004EDB3F /* KPTMapModel.swift in Sources */,
+				04E97CA51BC99C15004EDB3F /* KPTGameViewController.swift in Sources */,
+				04E97CAA1BC99F58004EDB3F /* KPTModelManager.swift in Sources */,
+				04E97CBC1BC99F97004EDB3F /* Vector2.swift in Sources */,
+				04E97C971BC99B3F004EDB3F /* AppDelegate.swift in Sources */,
+				04E97CB81BC99F8D004EDB3F /* Math.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		04F8D9731A175E630042A158 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -377,6 +503,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		04E97C9C1BC99B3F004EDB3F /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				04E97C9D1BC99B3F004EDB3F /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		04F8D9821A175E630042A158 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -396,6 +530,43 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		04E97CA21BC99B3F004EDB3F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = RescueKopterTV/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.marcinpedzimaz.labs.RescueKopter.tv;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		04E97CA31BC99B3F004EDB3F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = RescueKopterTV/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.marcinpedzimaz.labs.RescueKopter.tv;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Release;
+		};
 		04F8D9961A175E630042A158 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -539,6 +710,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		04E97CA41BC99B3F004EDB3F /* Build configuration list for PBXNativeTarget "RescueKopterTV" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04E97CA21BC99B3F004EDB3F /* Debug */,
+				04E97CA31BC99B3F004EDB3F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		04F8D9721A175E630042A158 /* Build configuration list for PBXProject "RescueKopter" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

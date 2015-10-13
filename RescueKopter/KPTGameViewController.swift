@@ -9,8 +9,13 @@
 import UIKit
 import Metal
 import QuartzCore
-import CoreMotion
 
+#if os(tvOS)
+    import GameController
+#else
+    import CoreMotion
+#endif
+    
 let maxFramesToBuffer = 3
 
 struct sunStructure {
@@ -76,8 +81,13 @@ class KPTGameViewController: UIViewController {
     var modelDirection: Float = 0
     
     //MOTION
-    
+   
+#if os(tvOS)
+    var gamePad:GCController? = nil
+#else
     let manager = CMMotionManager()
+#endif
+    
     let queue = NSOperationQueue()
 
     weak var kopter:KPTModel? = nil
@@ -119,25 +129,70 @@ class KPTGameViewController: UIViewController {
         
         sunBuffer = device.newBufferWithBytes(&sunData, length: sizeof(sunStructure), options: .CPUCacheModeDefaultCache)
 
+#if os(tvOS)
+
+        //register for controller search
+        
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: Selector("controllerDidConnect:"),
+            name: GCControllerDidConnectNotification,
+            object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: Selector("controllerDidDisconnect:"),
+            name: GCControllerDidDisconnectNotification,
+            object: nil)
+    
+        if GCController.controllers().count > 0 {
+    
+            self.gamePad = GCController.controllers().first
+            self.initializeGamePad()
+        }
+        else {
+    
+            GCController.startWirelessControllerDiscoveryWithCompletionHandler {
+                
+                //this is called in case of failure (searching stops)
+                
+                print("Remote discovery ended")
+                
+                if GCController.controllers().count == 0 {
+                
+                    //throw some error there is nothing we can control in our game
+                }
+                
+            }
+        }
+
+#else
+    
         if manager.deviceMotionAvailable {
             
             manager.deviceMotionUpdateInterval = 0.01
-        
+            
             manager.startDeviceMotionUpdatesToQueue(queue) {
                 (motion:CMDeviceMotion?, error:NSError?) -> Void in
-
-                if let motion = motion {
                 
+                if let motion = motion {
+                    
                     let attitude:CMAttitude = motion.attitude
                     self.upRotation = Float(atan2(Double(radToDeg(Float32(attitude.pitch))), Double(radToDeg(Float32(attitude.roll)))))
                 }
             }
         }
         
+        self.initializeGame()
+
+#endif
+        
+    }
+
+    func initializeGame() {
+    
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), { () -> Void in
             
             self.loadGameData()
-       
+            
             dispatch_sync(dispatch_get_main_queue(), { () -> Void in
                 
                 self.loadingLabel.hidden = true
@@ -148,9 +203,73 @@ class KPTGameViewController: UIViewController {
                 self.timer.addToRunLoop(NSRunLoop.mainRunLoop(), forMode: NSDefaultRunLoopMode)
             })
         })
-        
     }
+    
+#if os(tvOS)
+    
+    func controllerDidConnect(notification:NSNotification) {
+    
+        print("controllerDidConnect: \(notification.object)")
+    
+        //do not allow to connect more than 1
+        if let _ = self.gamePad {
+            return
+        }
+        
+        self.gamePad = GCController.controllers().first
+        self.initializeGamePad()
+    }
+    
+    func controllerDidDisconnect(notification:NSNotification) {
+    
+        print("controllerDidDisconnect: \(notification.object)")
+        
+        //stop game, infor about missing controller etc.
+    }
+    
+    func initializeGamePad() {
+    
+        //we are connected start motion monitoring and game
+        if let gamePad = self.gamePad {
+            
+            print("found at index: \(gamePad.playerIndex) - device: (\(gamePad)")
+            
+            guard let _ = gamePad.motion else {
+                print("Motion not supported")
+                return
+            }
+        
+            if let profile = gamePad.microGamepad {
 
+                gamePad.motion!.valueChangedHandler = {[unowned self](motion) in
+ 
+//TODO: Figure out is there any way to use gyro in Apple Remote
+//                    let attitude = motion.attitude
+//                    
+//                    let roll  = atan2(2*attitude.y*attitude.w - 2*attitude.x*attitude.z, 1 - 2*attitude.y*attitude.y - 2*attitude.z*attitude.z);
+//                    let pitch = atan2(2*attitude.x*attitude.w - 2*attitude.y*attitude.z, 1 - 2*attitude.x*attitude.x - 2*attitude.z*attitude.z);
+//                    
+//                    self.upRotation = Float(atan2(Double(radToDeg(Float32(pitch))), Double(radToDeg(Float32(roll)))))
+
+                    let gravity = motion.gravity
+                    
+                    self.upRotation = Float(atan2(radToDeg(Float32(-gravity.y * 0.5)), radToDeg(Float32(gravity.x))))
+                }
+                
+                profile.valueChangedHandler = { (gamepad, element) in
+
+                    print("PROFILE UPDATE")
+                }
+
+            }
+            
+            
+            self.initializeGame()
+        }
+    }
+    
+#endif
+    
     func loadGameData() {
     
         let skyboxSphere = KPTModelManager.sharedInstance.loadModel("sphere", device: device)
@@ -252,12 +371,14 @@ class KPTGameViewController: UIViewController {
         }
     
     }
-    
+
+#if os(iOS)
     override func prefersStatusBarHidden() -> Bool {
         
         return true
     }
-    
+#endif
+
     override func viewDidLayoutSubviews() {
         
         self.resize()

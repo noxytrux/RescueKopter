@@ -1,6 +1,9 @@
 {
   "layers" : [
     {
+      "filename" : "heli.imagestacklayer"
+    },
+    {
       "filename" : "Front.imagestacklayer"
     },
     {

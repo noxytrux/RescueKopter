@@ -252,8 +252,10 @@ class KPTGameViewController: UIViewController {
 //                    self.upRotation = Float(atan2(Double(radToDeg(Float32(pitch))), Double(radToDeg(Float32(roll)))))
 
                     let gravity = motion.gravity
+                    let upVector = Float32(abs(gravity.x))
+                    let rotation = Float32(-gravity.y * 0.2) * (gravity.x > 0 ? 1 : -1)
                     
-                    self.upRotation = Float(atan2(radToDeg(Float32(-gravity.y * 0.5)), radToDeg(Float32(gravity.x))))
+                    self.upRotation = Float(atan2(radToDeg(rotation), radToDeg(upVector)))
                 }
                 
                 profile.valueChangedHandler = { (gamepad, element) in
